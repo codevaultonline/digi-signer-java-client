@@ -2,6 +2,7 @@ package com.digisigner.client.data;
 
 import java.io.File;
 import java.io.InputStream;
+import java.io.OutputStream;
 
 public class Document {
 
@@ -20,4 +21,12 @@ public class Document {
     public void addSigner(Signer signer) {
     }
 
+    public String getDocumentFilename() {
+
+        return "";
+    }
+
+    public void writeToOutputStream(OutputStream out) {
+
+    }
 }
