@@ -52,8 +52,7 @@ public class DigiSignerClientTest {
 
         try {
             // call upload
-            String documentId = client.uploadDocument(document);
-            System.out.println("Document ID = " + documentId);
+            System.out.println("Document ID = " + client.uploadDocument(document).getDocumentId());
         } catch (DigiSignerException e) {  // in case http code is wrong
             System.out.println("Message: " + e.getMessage());
         }

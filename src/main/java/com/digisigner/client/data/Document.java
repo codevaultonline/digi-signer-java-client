@@ -13,6 +13,8 @@ public class Document {
 
     private String fileName;
 
+    private String documentId;
+
     private File file;
 
     private InputStream inputStream;
@@ -29,6 +31,14 @@ public class Document {
     public Document(InputStream inputStream, String fileName) {
         this.fileName = fileName;
         this.inputStream = inputStream;
+    }
+
+    public String getDocumentId() {
+        return documentId;
+    }
+
+    public void setDocumentId(String documentId) {
+        this.documentId = documentId;
     }
 
     public void setFileName(String fileName) {

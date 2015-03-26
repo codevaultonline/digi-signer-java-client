@@ -15,10 +15,11 @@ public class DigiSignerClient {
         return new SignatureRequest();
     }
 
-    public String uploadDocument(Document document) {
+    public Document uploadDocument(Document document) {
         UploadDocumentRequest request = new UploadDocumentRequest().addDocument(document);
         request.execute(apiKey);
+        document.setDocumentId(request.getDocumentId());
 
-        return request.getDocumentId();
+        return document;
     }
 }
