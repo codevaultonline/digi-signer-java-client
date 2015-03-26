@@ -19,7 +19,6 @@ public class PostRequest extends BaseRequest {
     private static final Logger log = Logger.getLogger(PostRequest.class);
 
     private static final String FILE_PART_NAME = "file";
-    private static final String ENCODING = "UTF-8";
     private static final String CRLF = "\r\n";
     private static final String HYPHEN = "--";
 

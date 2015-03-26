@@ -17,7 +17,7 @@ import org.json.JSONObject;
  * The base class for the http requests.
  */
 public class BaseRequest {
-
+    public static final String ENCODING = "UTF-8";
     private final String apiKey;
 
     public BaseRequest(String apiKey) {
@@ -46,7 +46,7 @@ public class BaseRequest {
         return null;
     }
 
-    private static String convertStreamToString(InputStream is) {
+    protected static String convertStreamToString(InputStream is) {
         Scanner s = new Scanner(is).useDelimiter("\\A");
         return s.hasNext() ? s.next() : "";
     }
