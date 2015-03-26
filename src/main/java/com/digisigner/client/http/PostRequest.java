@@ -1,6 +1,7 @@
 package com.digisigner.client.http;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
@@ -9,29 +10,35 @@ import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.digisigner.client.DigiSignerException;
 import com.digisigner.client.data.Document;
 import org.apache.log4j.Logger;
 
-public class SendDocument {
+public class PostRequest extends BaseRequest {
 
-    private static final Logger log = Logger.getLogger(SendDocument.class);
+    private static final Logger log = Logger.getLogger(PostRequest.class);
 
     private static final String FILE_PART_NAME = "file";
     private static final String ENCODING = "UTF-8";
     private static final String CRLF = "\r\n";
     private static final String HYPHEN = "--";
 
+    public PostRequest(String apiKey) {
+        super(apiKey);
+    }
+
     // ############################ UPLOAD DOCUMENT METHODS ################################
 
-    private int sendDocumentToServer(Document document) {
+    public Response sendDocumentToServer(Document document) {
         return sendDocumentToServer(document, getParamsToSendToServer());
     }
 
-    private int sendDocumentToServer(Document document, Map<String, String> parameters) {
+    private Response sendDocumentToServer(Document document, Map<String, String> parameters) {
 
-        String serverUrl = "getParameter(DigiOptions.OUTPUT_URL)";
+        // TODO change it
+        String serverUrl = Config.SERVER_URL + Config.DOCUMENTS_PATH;
         if (serverUrl == null) {
-            return -1;
+            return null;
         }
 
         PrintWriter writer = null;
@@ -41,6 +48,7 @@ public class SendDocument {
 
             // open connection to server
             HttpURLConnection connection = (HttpURLConnection) new URL(serverUrl).openConnection();
+            addAuthentication(connection);
             connection.setDoOutput(true);
             connection.setRequestProperty("Content-Type", "multipart/form-data; boundary=" + boundary);
             OutputStream out = connection.getOutputStream();
@@ -57,15 +65,11 @@ public class SendDocument {
             // end of multipart/form-data
             writer.append(HYPHEN).append(boundary).append(HYPHEN).append(CRLF).flush();
 
-            return connection.getResponseCode();
+            return callService(connection);
         } catch (Exception e) {
-            System.err.println("Failed to send signed document to " + serverUrl);
-            e.printStackTrace();
+            log.error("Failed to send signed document to " + serverUrl, e);
 
-            // open dialog and show error message
-            String message = "Failed to send signed document to the server!";
-
-            return -1;
+            throw new DigiSignerException(e.getMessage(), null, -1);
         } finally {
             if (writer != null) {
                 writer.close();
@@ -75,21 +79,30 @@ public class SendDocument {
 
     private void outputDocument(Document document, PrintWriter writer,
                                 OutputStream out, String boundary) throws IOException {
-        String filename = document.getDocumentFilename();
         writer.append(HYPHEN).append(boundary).append(CRLF);
         writer.append("Content-Disposition: form-data; ");
         writer.append("name=\"" + FILE_PART_NAME + "\"; ");
-        writer.append("filename=\"").append(filename).append("\"").append(CRLF);
+        writer.append("filename=\"").append(document.getFileName()).append("\"").append(CRLF);
         writer.append("Content-Type: application/pdf").append(CRLF);
         writer.append("Content-Transfer-Encoding: binary").append(CRLF);
         writer.append(CRLF).flush();
 
         // write document content to output stream
-        document.writeToOutputStream(out);
+        writeToOutputStream(document, out);
 
         // flush and end of binary section
         out.flush();
         writer.append(CRLF).flush();
+    }
+
+    private void writeToOutputStream(Document document, OutputStream out) throws IOException {
+        InputStream inputStream = document.getInputStream();
+        byte[] buffer = new byte[4096];
+        int bytesRead;
+
+        while ((bytesRead = inputStream.read(buffer)) != -1) {
+            out.write(buffer, 0, bytesRead);
+        }
     }
 
     private void outputParameters(Map<String, String> parameters, PrintWriter writer, String boundary) {

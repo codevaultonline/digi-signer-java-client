@@ -5,10 +5,14 @@ import java.util.List;
 @SuppressWarnings("serial")
 public class DigiSignerException extends RuntimeException {
 
-    private final List<String> errors;
-    private final Integer httpCode;
+    private List<String> errors;
+    private Integer httpCode;
 
-    private DigiSignerException(String message, List<String> errors, Integer httpCode) {
+    public DigiSignerException(String message) {
+        super(message);
+    }
+
+    public DigiSignerException(String message, List<String> errors, Integer httpCode) {
         super(message);
         this.errors = errors;
         this.httpCode = httpCode;

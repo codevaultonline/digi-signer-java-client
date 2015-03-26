@@ -18,7 +18,7 @@ public class DigiSignerClientTest {
     private static final String API_KEY = "78273487234";
 
     @Test
-    public void testUploadDocument() throws FileNotFoundException {
+    public void testSendRequest() throws FileNotFoundException {
 
         // API client
         DigiSignerClient client = new DigiSignerClient(API_KEY);
@@ -42,10 +42,27 @@ public class DigiSignerClientTest {
         }
     }
 
+    @Test
+    public void testUploadDocument() throws FileNotFoundException {
+        // API client
+        DigiSignerClient client = new DigiSignerClient(API_KEY);
+
+        // add document
+        Document document = buildDocumentFromFile();
+
+        try {
+            // call upload
+            String documentId = client.uploadDocument(document);
+            System.out.println("Document ID = " + documentId);
+        } catch (DigiSignerException e) {  // in case http code is wrong
+            System.out.println("Message: " + e.getMessage());
+        }
+    }
+
     private Document buildDocumentFromFile() {
 
         URL url = getClass().getResource("/document.pdf");
-        Document document = new Document(new File(url.getFile()));
+        Document document = new Document(new File(url.getFile()), "fromJUNIT.pdf");
 
         // add signer to document
         Signer signer = new Signer("dmitry.lakhin@gmail.com");
@@ -67,7 +84,7 @@ public class DigiSignerClientTest {
     private Document buildDocumentFromInputStream() throws FileNotFoundException {
         URL url = getClass().getResource("/document.pdf");
         InputStream inputStream = new FileInputStream(new File(url.getFile()));
-        Document document1 = new Document(inputStream);
+        Document document1 = new Document(inputStream, "test.pdf");
 
         // add signer to document
         Signer signer = new Signer("dmitry.lakhin@gmail.com");
