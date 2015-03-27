@@ -55,7 +55,7 @@ public class BaseRequest {
         try {
             JSONObject error = new JSONObject(message);
             String errorMessage = error.getString("message");
-            List<String> detailsErrors = new ArrayList<String>();
+            List<String> detailsErrors = new ArrayList<>();
             if (error.has("errors")) {
 
             }
