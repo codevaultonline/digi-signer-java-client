@@ -16,7 +16,7 @@ public class UploadDocumentRequest extends BaseRequest {
 
     @Override
     public void execute(String apiKey) {
-        Response response = new PostRequest(apiKey).sendDocumentToServer(document);
+        Response response = new PostRequest(apiKey).sendDocumentToServer(Config.DOCUMENTS_URL, document);
         documentId = new JSONObject(response.getContent()).getString(Config.PARAM_DOC_ID);
     }
 

@@ -32,17 +32,11 @@ public class PostRequest extends BaseRequest {
 
     // ############################ UPLOAD DOCUMENT METHODS ################################
 
-    public Response sendDocumentToServer(Document document) {
-        return sendDocumentToServer(document, getParamsToSendToServer());
+    public Response sendDocumentToServer(String url, Document document) {
+        return sendDocumentToServer(url, document, getParamsToSendToServer());
     }
 
-    private Response sendDocumentToServer(Document document, Map<String, String> parameters) {
-
-        // TODO change it
-        String serverUrl = Config.DOCUMENTS_URL;
-        if (serverUrl == null) {
-            return null;
-        }
+    private Response sendDocumentToServer(String url, Document document, Map<String, String> parameters) {
 
         PrintWriter writer = null;
         try {
@@ -50,7 +44,7 @@ public class PostRequest extends BaseRequest {
             String boundary = Long.toHexString(System.currentTimeMillis());
 
             // open connection to server
-            HttpURLConnection connection = (HttpURLConnection) new URL(serverUrl).openConnection();
+            HttpURLConnection connection = (HttpURLConnection) new URL(url).openConnection();
             addAuthentication(connection);
             connection.setDoOutput(true);
             connection.setRequestProperty("Content-Type", "multipart/form-data; boundary=" + boundary);
@@ -70,7 +64,7 @@ public class PostRequest extends BaseRequest {
 
             return callService(connection);
         } catch (Exception e) {
-            log.error("Failed to send signed document to " + serverUrl, e);
+            log.error("Failed to send signed document to " + url, e);
 
             throw new DigiSignerException(e.getMessage(), null, -1);
         } finally {

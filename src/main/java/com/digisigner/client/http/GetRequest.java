@@ -54,6 +54,39 @@ public class GetRequest extends BaseRequest {
         }
     }
 
+    public File getFileResponse(String documentId, String filename) {
+        InputStream inputStream = null;
+        int code;
+        String responseStr;
+
+        HttpURLConnection connection = get(url + "/" + documentId, null);
+        try {
+            code = connection.getResponseCode();
+
+            if (code == HttpURLConnection.HTTP_OK) {
+                File file = createTemporaryFile(filename);
+                Files.copy(connection.getInputStream(), file.toPath(), StandardCopyOption.REPLACE_EXISTING);
+                return file;
+            }
+            inputStream = connection.getErrorStream();
+            responseStr = convertStreamToString(inputStream);
+
+        } catch (Exception e) {
+            throw new DigiSignerException(e.getMessage());
+        } finally {
+            if (inputStream != null) {
+                try {
+                    inputStream.close();
+                } catch (Exception e) {
+                    log.error("Failed to close input stream.", e);
+                }
+            }
+        }
+        // if errors occur
+        throwDigisignerException(responseStr, code);
+        return null;
+    }
+
     private File createTemporaryFile(String filename) {
         String prefix = filename.substring(0, filename.indexOf(POINT));
         String postfix = filename.substring(filename.indexOf(POINT) + 1, filename.length());
@@ -104,38 +137,5 @@ public class GetRequest extends BaseRequest {
             return EMPTY;
         }
         return url.toString();
-    }
-
-    public File getFileResponse(String documentId, String filename) {
-        InputStream inputStream = null;
-        int code;
-        String responseStr;
-
-        HttpURLConnection connection = get(url + "/" + documentId, null);
-        try {
-            code = connection.getResponseCode();
-
-            if (code == HttpURLConnection.HTTP_OK) {
-                File file = createTemporaryFile(filename);
-                Files.copy(connection.getInputStream(), file.toPath(), StandardCopyOption.REPLACE_EXISTING);
-                return file;
-            }
-            inputStream = connection.getErrorStream();
-            responseStr = convertStreamToString(inputStream);
-
-        } catch (Exception e) {
-            throw new DigiSignerException(e.getMessage());
-        } finally {
-            if (inputStream != null) {
-                try {
-                    inputStream.close();
-                } catch (Exception e) {
-                    log.error("Failed to close input stream.", e);
-                }
-            }
-        }
-        // if errors occur
-        throwDigisignerException(responseStr, code);
-        return null;
     }
 }
