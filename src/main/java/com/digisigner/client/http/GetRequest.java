@@ -12,8 +12,9 @@ import java.nio.file.StandardCopyOption;
 import java.util.Iterator;
 import java.util.Map;
 
-import com.digisigner.client.DigiSignerException;
 import org.apache.log4j.Logger;
+
+import com.digisigner.client.DigiSignerException;
 
 /**
  * The wrapper class for the get request.
@@ -22,13 +23,13 @@ public class GetRequest extends BaseRequest {
 
     private static final Logger log = Logger.getLogger(GetRequest.class);
     private static final String POINT = ".";
-    public static final String EMPTY = "";
+    private static final String EMPTY = "";
 
     private Map<String, String> parameters;
     private String url;
 
-    public GetRequest(String apiKey) {
-        super(apiKey);
+    public GetRequest(String apiKey, String url) {
+        this(apiKey, url, null);
     }
 
     public GetRequest(String apiKey, String url, Map<String, String> parameters) {
@@ -39,7 +40,7 @@ public class GetRequest extends BaseRequest {
 
     public Response getResponse() {
         try {
-            HttpURLConnection connection = get(parameters);
+            HttpURLConnection connection = get(url, parameters);
             int code = connection.getResponseCode();
             InputStream inputStream;
             if (HttpURLConnection.HTTP_OK == code) {
@@ -53,11 +54,7 @@ public class GetRequest extends BaseRequest {
         }
     }
 
-    public File getFileResponse(String filename) {
-        return getFile(createTemporaryFile(filename));
-    }
-
-    private static File createTemporaryFile(String filename) {
+    private File createTemporaryFile(String filename) {
         String prefix = filename.substring(0, filename.indexOf(POINT));
         String postfix = filename.substring(filename.indexOf(POINT) + 1, filename.length());
         try {
@@ -74,7 +71,7 @@ public class GetRequest extends BaseRequest {
      * @param parameters included for url.
      * @return {@code HttpURLConnection} instance.
      */
-    private HttpURLConnection get(Map<String, String> parameters) {
+    private HttpURLConnection get(String url, Map<String, String> parameters) {
         HttpURLConnection connection = null;
         try {
             connection = (HttpURLConnection) new URL(url + getParametersForUrl(parameters)).openConnection();
@@ -109,16 +106,17 @@ public class GetRequest extends BaseRequest {
         return url.toString();
     }
 
-    private File getFile(File file) {
+    public File getFileResponse(String documentId, String filename) {
         InputStream inputStream = null;
         int code;
         String responseStr;
 
-        HttpURLConnection connection = get(null);
+        HttpURLConnection connection = get(url + "/" + documentId, null);
         try {
             code = connection.getResponseCode();
 
             if (code == HttpURLConnection.HTTP_OK) {
+                File file = createTemporaryFile(filename);
                 Files.copy(connection.getInputStream(), file.toPath(), StandardCopyOption.REPLACE_EXISTING);
                 return file;
             }
@@ -135,7 +133,6 @@ public class GetRequest extends BaseRequest {
                     log.error("Failed to close input stream.", e);
                 }
             }
-
         }
         // if errors occur
         throwDigisignerException(responseStr, code);

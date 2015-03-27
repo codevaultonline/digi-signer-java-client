@@ -1,9 +1,13 @@
 package com.digisigner.client;
 
 import com.digisigner.client.data.Document;
+import com.digisigner.client.requests.GetDocumentRequest;
 import com.digisigner.client.requests.SignatureRequest;
 import com.digisigner.client.requests.UploadDocumentRequest;
 
+/**
+ * Main class for DigiSigner client.
+ */
 public class DigiSignerClient {
     private final String apiKey;
 
@@ -21,5 +25,11 @@ public class DigiSignerClient {
         document.setDocumentId(request.getDocumentId());
 
         return document;
+    }
+
+    public Document getDocumentById(String documentId, String fileName) {
+        GetDocumentRequest request = new GetDocumentRequest(documentId, fileName);
+        request.execute(apiKey);
+        return request.getDocument();
     }
 }

@@ -5,10 +5,10 @@ import com.digisigner.client.data.Document;
 /**
  *
  */
-public class SignatureRequest extends BaseRequest{
-    
+public class SignatureRequest extends BaseRequest {
+
     @Override
-    public void execute(String apyKey) {
+    public void execute(String apiKey) {
 
     }
 

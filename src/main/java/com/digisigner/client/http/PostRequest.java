@@ -14,6 +14,10 @@ import com.digisigner.client.DigiSignerException;
 import com.digisigner.client.data.Document;
 import org.apache.log4j.Logger;
 
+
+/**
+ *
+ */
 public class PostRequest extends BaseRequest {
 
     private static final Logger log = Logger.getLogger(PostRequest.class);
@@ -35,7 +39,7 @@ public class PostRequest extends BaseRequest {
     private Response sendDocumentToServer(Document document, Map<String, String> parameters) {
 
         // TODO change it
-        String serverUrl = Config.SERVER_URL + Config.DOCUMENTS_PATH;
+        String serverUrl = Config.DOCUMENTS_URL;
         if (serverUrl == null) {
             return null;
         }

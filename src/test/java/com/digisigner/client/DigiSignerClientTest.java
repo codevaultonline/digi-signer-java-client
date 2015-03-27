@@ -13,9 +13,13 @@ import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.net.URL;
 
+/**
+ * The JUnit class for the DigiSigner client.
+ */
 public class DigiSignerClientTest {
 
     private static final String API_KEY = "78273487234";
+    private static final String MESSAGE = "Message: ";
 
     @Test
     public void testSendRequest() throws FileNotFoundException {
@@ -38,7 +42,7 @@ public class DigiSignerClientTest {
             SignatureRequest response = client.sendSignatureRequest(signatureRequest);
             System.out.println("Signature request id " + response.getId());
         } catch (DigiSignerException e) {  // in case http code is wrong
-            System.out.println("Message: " + e.getMessage());
+            System.out.println(MESSAGE + e.getMessage());
         }
     }
 
@@ -54,7 +58,28 @@ public class DigiSignerClientTest {
             // call upload
             System.out.println("Document ID = " + client.uploadDocument(document).getDocumentId());
         } catch (DigiSignerException e) {  // in case http code is wrong
-            System.out.println("Message: " + e.getMessage());
+            System.out.println(MESSAGE + e.getMessage());
+        }
+    }
+
+    @Test
+    public void testUploadAndGetDocument() throws FileNotFoundException {
+        // API client
+        DigiSignerClient client = new DigiSignerClient(API_KEY);
+
+        // add document
+        Document document = buildDocumentFromFile();
+
+        try {
+            // call upload
+            String documentId = client.uploadDocument(document).getDocumentId();
+            System.out.println("Document ID = " + documentId);
+
+            // get file
+            Document retrievedDocument = client.getDocumentById(documentId, "newFileName.pdf");
+            System.out.println("The downloaded filePath = " + retrievedDocument.getFile().getAbsolutePath());
+        } catch (DigiSignerException e) {  // in case http code is wrong
+            System.out.println(MESSAGE + e.getMessage());
         }
     }
 

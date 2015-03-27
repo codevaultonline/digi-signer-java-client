@@ -7,6 +7,9 @@ import java.io.InputStream;
 
 import org.apache.log4j.Logger;
 
+/**
+ *
+ */
 public class Document {
 
     private static final Logger log = Logger.getLogger(Document.class);
@@ -72,6 +75,10 @@ public class Document {
             log.error("File was not found!", e);
         }
         return null;
+    }
+
+    public File getFile() {
+        return file;
     }
 
     public void addSigner(Signer signer) {
