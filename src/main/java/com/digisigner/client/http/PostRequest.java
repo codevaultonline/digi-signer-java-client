@@ -1,5 +1,17 @@
 package com.digisigner.client.http;
 
+import com.digisigner.client.DigiSignerException;
+import com.digisigner.client.data.Document;
+import com.digisigner.client.data.Message;
+import com.sun.jersey.api.client.Client;
+import com.sun.jersey.api.client.ClientResponse;
+import com.sun.jersey.api.client.WebResource;
+import com.sun.jersey.api.client.config.ClientConfig;
+import com.sun.jersey.api.client.config.DefaultClientConfig;
+import com.sun.jersey.api.client.filter.HTTPBasicAuthFilter;
+import com.sun.jersey.api.json.JSONConfiguration;
+import org.apache.log4j.Logger;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -7,16 +19,9 @@ import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.util.HashMap;
-import java.util.Map;
-
-import com.digisigner.client.DigiSignerException;
-import com.digisigner.client.data.Document;
-import org.apache.log4j.Logger;
-
 
 /**
- *
+ * Class sends post requests to the server.
  */
 public class PostRequest extends BaseRequest {
 
@@ -30,13 +35,32 @@ public class PostRequest extends BaseRequest {
         super(apiKey);
     }
 
+    // ############################ POST DATA AS JSON ################################
+
+    public <T> T postAsJson(Class<T> responseClass, Object object, String url){
+
+        // Create Jersey client
+        ClientConfig clientConfig = new DefaultClientConfig();
+        clientConfig.getFeatures().put(JSONConfiguration.FEATURE_POJO_MAPPING, Boolean.TRUE);
+        Client client = Client.create(clientConfig);
+        client.addFilter(new HTTPBasicAuthFilter(getApiKey(), ""));
+
+
+        WebResource webResourcePost = client.resource(url);
+        ClientResponse response = webResourcePost.type("application/json").entity(object).post(ClientResponse.class,
+                object);
+        int code = response.getStatus();
+        if (code == HttpURLConnection.HTTP_OK) {
+            return response.getEntity(responseClass);
+        }
+
+        Message message = response.getEntity(Message.class);
+        throwDigisignerException(message, code);
+        return null;
+    }
     // ############################ UPLOAD DOCUMENT METHODS ################################
 
     public Response sendDocumentToServer(String url, Document document) {
-        return sendDocumentToServer(url, document, getParamsToSendToServer());
-    }
-
-    private Response sendDocumentToServer(String url, Document document, Map<String, String> parameters) {
 
         PrintWriter writer = null;
         try {
@@ -53,11 +77,6 @@ public class PostRequest extends BaseRequest {
 
             // send document content
             outputDocument(document, writer, out, boundary);
-
-            // send parameters
-            if (parameters != null) {
-                outputParameters(parameters, writer, boundary);
-            }
 
             // end of multipart/form-data
             writer.append(HYPHEN).append(boundary).append(HYPHEN).append(CRLF).flush();
@@ -102,38 +121,19 @@ public class PostRequest extends BaseRequest {
         }
     }
 
-    private void outputParameters(Map<String, String> parameters, PrintWriter writer, String boundary) {
-        for (String parameter : parameters.keySet()) {
-            writer.append(HYPHEN).append(boundary).append(CRLF);
-            writer.append("Content-Disposition: form-data; name=\"").append(parameter).append("\"").append(CRLF);
-            writer.append("Content-Type: text/plain; charset=" + ENCODING).append(CRLF);
-            writer.append(CRLF);
-            writer.append(parameters.get(parameter));
-            writer.append(CRLF).flush();
+    private Response callService(HttpURLConnection connection) throws IOException {
+        int code = connection.getResponseCode();
+        String responseStr;
+        InputStream response;
+        if (code == HttpURLConnection.HTTP_OK) {
+            response = connection.getInputStream();
+            responseStr = convertStreamToString(response);
+            return new Response(code, responseStr);
         }
+
+        response = connection.getErrorStream();
+        responseStr = convertStreamToString(response);
+        throwDigisignerException(responseStr, code);
+        return null;
     }
-
-
-    // ############################ SERVICE METHODS ################################
-
-    private Map<String, String> getParamsToSendToServer() {
-        Map<String, String> paramsMap = new HashMap<String, String>();
-        String paramsStr = "getParameter(DigiOptions.SEND_PARAMS_TO_SERVER)";
-
-        if (paramsStr == null) {
-            return paramsMap;
-        }
-
-        String[] params = paramsStr.split(",");
-        for (String param : params) {
-            String value = "getParameter(param.trim())";
-            if (value != null) {
-                paramsMap.put(param.trim(), value);
-            }
-        }
-
-        return paramsMap;
-    }
-
-
 }

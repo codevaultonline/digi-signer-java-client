@@ -1,6 +1,5 @@
 package com.digisigner.client.http;
 
-import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.util.ArrayList;
@@ -10,6 +9,7 @@ import java.util.Scanner;
 import javax.xml.bind.DatatypeConverter;
 
 import com.digisigner.client.DigiSignerException;
+import com.digisigner.client.data.Message;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -30,22 +30,6 @@ public class BaseRequest {
         httpConn.setRequestProperty("authorization", authorization);
     }
 
-    protected Response callService(HttpURLConnection connection) throws IOException {
-        int code = connection.getResponseCode();
-        String responseStr;
-        InputStream response;
-        if (code == HttpURLConnection.HTTP_OK) {
-            response = connection.getInputStream();
-            responseStr = convertStreamToString(response);
-            return new Response(code, responseStr);
-        }
-
-        response = connection.getErrorStream();
-        responseStr = convertStreamToString(response);
-        throwDigisignerException(responseStr, code);
-        return null;
-    }
-
     protected static String convertStreamToString(InputStream is) {
         Scanner s = new Scanner(is).useDelimiter("\\A");
         return s.hasNext() ? s.next() : "";
@@ -57,7 +41,7 @@ public class BaseRequest {
             String errorMessage = error.getString("message");
             List<String> detailsErrors = new ArrayList<>();
             if (error.has("errors")) {
-
+                // TODO add errors handling
             }
             throw new DigiSignerException(errorMessage, detailsErrors, code);
         } catch (JSONException ex) {
@@ -65,6 +49,18 @@ public class BaseRequest {
         }
     }
 
+    protected void throwDigisignerException(Message message, int code) {
+        try {
+            List<String> detailsErrors = new ArrayList<>();
+            for (Message detailsMessage : message.getErrors()) {
+                detailsErrors.add(detailsMessage.getMessage());
+            }
+            throw new DigiSignerException(message.getMessage(), detailsErrors, code);
+        } catch (JSONException ex) {
+            throw new DigiSignerException(ex.getMessage());
+        }
+    }
+    
     public String getApiKey() {
         return apiKey;
     }
