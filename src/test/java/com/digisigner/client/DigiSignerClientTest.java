@@ -19,6 +19,9 @@ import java.net.URL;
 public class DigiSignerClientTest {
 
     private static final String API_KEY = "afab279b-ef99-42dc-8b28-98907e23906d";
+
+    private static final String TEST_SIGNER_EMAIL = "asdf.asdf@list.ru";
+
     private static final String MESSAGE = "Message: ";
 
     @Test
@@ -30,17 +33,20 @@ public class DigiSignerClientTest {
         // signature request
         SignatureRequest signatureRequest = new SignatureRequest();
 
-        // add document
-        Document document1 = buildDocumentFromFile();
-//        document1.setDocumentId("7c7fe2ef-663a-428b-9309-cd351cd3bcf8");
-        signatureRequest.addDocument(document1);
 
-        Document document2 = buildDocumentFromInputStream();
-//        document2.setDocumentId("7c7fe2ef-663a-428b-9309-cd351cd3bcf8");
-        signatureRequest.addDocument(document2);
-
-        // send signature request
         try {
+            // add document
+            Document document1 = buildDocumentFromFile();
+            String documentId1 = client.uploadDocument(document1).getDocumentId();
+            document1.setDocumentId(documentId1);
+            signatureRequest.addDocument(document1);
+
+            Document document2 = buildDocumentFromInputStream();
+            String documentId2 = client.uploadDocument(document2).getDocumentId();
+            document2.setDocumentId(documentId2);
+            signatureRequest.addDocument(document2);
+
+            // send signature request
             SignatureRequest response = client.sendSignatureRequest(signatureRequest);
             System.out.println("Signature request id " + response.getSignatureRequestId());
         } catch (DigiSignerException e) {  // in case http code is wrong
@@ -94,7 +100,7 @@ public class DigiSignerClientTest {
         Document document = new Document(new File(url.getFile()), "fromJUNIT.pdf");
 
         // add signer to document
-        Signer signer = new Signer("asdf.asdf@list.ru");
+        Signer signer = new Signer(TEST_SIGNER_EMAIL);
         document.addSigner(signer);
 
         int[] rectangle1 = new int[]{0, 0, 200, 100};
@@ -116,7 +122,7 @@ public class DigiSignerClientTest {
         Document document1 = new Document(inputStream, "test.pdf");
 
         // add signer to document
-        Signer signer = new Signer("asdf.asdf@list.ru");
+        Signer signer = new Signer(TEST_SIGNER_EMAIL);
         document1.addSigner(signer);
 
         int[] rectangle1 = new int[]{0, 0, 200, 100};

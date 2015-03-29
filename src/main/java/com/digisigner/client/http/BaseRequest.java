@@ -39,11 +39,7 @@ public class BaseRequest {
         try {
             JSONObject error = new JSONObject(message);
             String errorMessage = error.getString("message");
-            List<String> detailsErrors = new ArrayList<>();
-            if (error.has("errors")) {
-                // TODO add errors handling
-            }
-            throw new DigiSignerException(errorMessage, detailsErrors, code);
+            throw new DigiSignerException(errorMessage, null, code);
         } catch (JSONException ex) {
             throw new DigiSignerException(ex.getMessage());
         }
