@@ -25,6 +25,10 @@ public class SignatureRequest {
         documents.add(document);
     }
 
+    public List<Document> getDocuments() {
+        return documents;
+    }
+
     public String getSignatureRequestId() {
         return signatureRequestId;
     }

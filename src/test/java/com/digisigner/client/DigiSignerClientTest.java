@@ -37,13 +37,9 @@ public class DigiSignerClientTest {
         try {
             // add document
             Document document1 = buildDocumentFromFile();
-            String documentId1 = client.uploadDocument(document1).getDocumentId();
-            document1.setDocumentId(documentId1);
             signatureRequest.addDocument(document1);
 
             Document document2 = buildDocumentFromInputStream();
-            String documentId2 = client.uploadDocument(document2).getDocumentId();
-            document2.setDocumentId(documentId2);
             signatureRequest.addDocument(document2);
 
             // send signature request
@@ -67,7 +63,7 @@ public class DigiSignerClientTest {
 
         try {
             // call upload
-            System.out.println("Document ID = " + client.uploadDocument(document).getDocumentId());
+            System.out.println("Document ID = " + client.uploadDocument(document).getId());
         } catch (DigiSignerException e) {  // in case http code is wrong
             System.out.println(MESSAGE + e.getMessage());
         }
@@ -83,7 +79,7 @@ public class DigiSignerClientTest {
 
         try {
             // call upload
-            String documentId = client.uploadDocument(document).getDocumentId();
+            String documentId = client.uploadDocument(document).getId();
             System.out.println("Document ID = " + documentId);
 
             // get file

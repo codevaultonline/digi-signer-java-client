@@ -26,7 +26,7 @@ public class Document {
     private String fileName;
 
     @XmlElement(name = "document_id")
-    private String documentId;
+    private String id;
 
     private File file;
 
@@ -53,12 +53,12 @@ public class Document {
         this.inputStream = inputStream;
     }
 
-    public String getDocumentId() {
-        return documentId;
+    public String getId() {
+        return id;
     }
 
-    public void setDocumentId(String documentId) {
-        this.documentId = documentId;
+    public void setId(String id) {
+        this.id = id;
     }
 
     public String getSubject() {
