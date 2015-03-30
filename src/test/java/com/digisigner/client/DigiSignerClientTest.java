@@ -51,7 +51,7 @@ public class DigiSignerClientTest {
             System.out.println("Signature request id " + response.getSignatureRequestId());
         } catch (DigiSignerException e) {  // in case http code is wrong
             System.out.println(MESSAGE + e.getMessage());
-            for(String error : e.getErrors()) {
+            for (String error : e.getErrors()) {
                 System.out.println(error);
             }
         }

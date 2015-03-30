@@ -1,8 +1,13 @@
 package com.digisigner.client.http;
 
-import com.digisigner.client.DigiSignerException;
-import com.digisigner.client.data.Document;
-import com.digisigner.client.data.Message;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.io.OutputStreamWriter;
+import java.io.PrintWriter;
+import java.net.HttpURLConnection;
+import java.net.URL;
+
 import com.sun.jersey.api.client.Client;
 import com.sun.jersey.api.client.ClientResponse;
 import com.sun.jersey.api.client.WebResource;
@@ -12,13 +17,9 @@ import com.sun.jersey.api.client.filter.HTTPBasicAuthFilter;
 import com.sun.jersey.api.json.JSONConfiguration;
 import org.apache.log4j.Logger;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.io.OutputStreamWriter;
-import java.io.PrintWriter;
-import java.net.HttpURLConnection;
-import java.net.URL;
+import com.digisigner.client.DigiSignerException;
+import com.digisigner.client.data.Document;
+import com.digisigner.client.data.Message;
 
 /**
  * Class sends post requests to the server.
@@ -37,7 +38,7 @@ public class PostRequest extends BaseRequest {
 
     // ############################ POST DATA AS JSON ################################
 
-    public <T> T postAsJson(Class<T> responseClass, Object object, String url){
+    public <T> T postAsJson(Class<T> responseClass, Object object, String url) {
 
         // Create Jersey client
         ClientConfig clientConfig = new DefaultClientConfig();

@@ -8,10 +8,11 @@ import java.util.Scanner;
 
 import javax.xml.bind.DatatypeConverter;
 
-import com.digisigner.client.DigiSignerException;
-import com.digisigner.client.data.Message;
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import com.digisigner.client.DigiSignerException;
+import com.digisigner.client.data.Message;
 
 /**
  * The base class for the http requests.
@@ -57,7 +58,7 @@ public class BaseRequest {
         }
     }
     
-    public String getApiKey() {
+    protected String getApiKey() {
         return apiKey;
     }
 }

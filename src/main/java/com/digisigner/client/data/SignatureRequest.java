@@ -19,7 +19,7 @@ public class SignatureRequest {
     private String signatureRequestId;
 
     @XmlElement(name = "documents")
-    private List<Document> documents = new ArrayList<>();
+    private final List<Document> documents = new ArrayList<>();
 
     public void addDocument(Document document) {
         documents.add(document);

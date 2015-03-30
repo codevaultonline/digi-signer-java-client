@@ -37,7 +37,7 @@ public class Document {
     @XmlElement
     private String message;
     @XmlElement
-    private List<Signer> signers = new ArrayList<>();
+    private final List<Signer> signers = new ArrayList<>();
 
     public Document(File file) {
         this.file = file;

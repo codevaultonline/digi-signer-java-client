@@ -1,14 +1,15 @@
 package com.digisigner.client;
 
+import java.io.File;
+
+import org.json.JSONObject;
+
 import com.digisigner.client.data.Document;
+import com.digisigner.client.data.SignatureRequest;
 import com.digisigner.client.http.Config;
 import com.digisigner.client.http.GetRequest;
 import com.digisigner.client.http.PostRequest;
 import com.digisigner.client.http.Response;
-import com.digisigner.client.data.SignatureRequest;
-import org.json.JSONObject;
-
-import java.io.File;
 
 /**
  * Main class for DigiSigner client.
