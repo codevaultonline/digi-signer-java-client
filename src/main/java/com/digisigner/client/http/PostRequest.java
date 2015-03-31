@@ -46,7 +46,6 @@ public class PostRequest extends BaseRequest {
         Client client = Client.create(clientConfig);
         client.addFilter(new HTTPBasicAuthFilter(getApiKey(), ""));
 
-
         WebResource webResourcePost = client.resource(url);
         ClientResponse response = webResourcePost.type("application/json").entity(object).post(ClientResponse.class,
                 object);

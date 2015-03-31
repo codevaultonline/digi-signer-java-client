@@ -11,11 +11,15 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlRootElement
 @XmlAccessorType(XmlAccessType.FIELD)
 public class Event {
-    @XmlElement(name = "event_time")
+    public static final String EVENT_TIME_NAME = "event_time";
+    public static final String EVENT_TYPE_NAME = "event_type";
+    public static final String SIGNATURE_REQUEST_NAME = "signature_request";
+
+    @XmlElement(name = EVENT_TIME_NAME)
     private long eventTime;
-    @XmlElement(name = "event_type")
+    @XmlElement(name = EVENT_TYPE_NAME)
     private String eventType;
-    @XmlElement(name = "signature_request")
+    @XmlElement(name = SIGNATURE_REQUEST_NAME)
     private SignatureRequest signatureRequest;
 
 
