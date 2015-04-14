@@ -49,18 +49,6 @@ public class BaseRequest {
         return client.resource(url);
     }
 
-    public <T> T handleResponse(Class<T> responseClass, ClientResponse response) {
-
-        int code = response.getStatus();
-        if (code == HttpURLConnection.HTTP_OK) {
-            return response.getEntity(responseClass);
-        }
-
-        Message message = response.getEntity(Message.class);
-        throwDigisignerException(message, code);
-        return null;
-    }
-
     protected static String convertStreamToString(InputStream is) {
         Scanner s = new Scanner(is).useDelimiter("\\A");
         return s.hasNext() ? s.next() : "";
@@ -76,7 +64,19 @@ public class BaseRequest {
         }
     }
 
-    protected void throwDigisignerException(Message message, int code) {
+    protected <T> T handleResponse(Class<T> responseClass, ClientResponse response) {
+
+        int code = response.getStatus();
+        if (code == HttpURLConnection.HTTP_OK) {
+            return response.getEntity(responseClass);
+        }
+
+        Message message = response.getEntity(Message.class);
+        throwDigisignerException(message, code);
+        return null;
+    }
+
+    private void throwDigisignerException(Message message, int code) {
         try {
             List<String> detailsErrors = new ArrayList<>();
             for (Message detailsMessage : message.getErrors()) {
