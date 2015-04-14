@@ -39,6 +39,9 @@ public class Document {
     @XmlElement
     private final List<Signer> signers = new ArrayList<>();
 
+    @SuppressWarnings("unused")
+    private Document() { /* JAXB requires it */ }
+
     public Document(File file) {
         this.file = file;
     }

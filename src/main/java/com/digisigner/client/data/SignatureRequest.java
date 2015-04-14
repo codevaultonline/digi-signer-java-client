@@ -18,6 +18,9 @@ public class SignatureRequest {
     @XmlElement(name = "signature_request_id")
     private String signatureRequestId;
 
+    @XmlElement(name = "is_completed")
+    private Boolean completed;
+
     @XmlElement(name = "documents")
     private final List<Document> documents = new ArrayList<>();
 
@@ -31,5 +34,9 @@ public class SignatureRequest {
 
     public String getSignatureRequestId() {
         return signatureRequestId;
+    }
+
+    public Boolean getCompleted() {
+        return completed;
     }
 }

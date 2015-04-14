@@ -8,6 +8,8 @@ import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.StandardCopyOption;
 
+import com.sun.jersey.api.client.ClientResponse;
+import com.sun.jersey.api.client.WebResource;
 import org.apache.log4j.Logger;
 
 import com.digisigner.client.DigiSignerException;
@@ -23,6 +25,18 @@ public class GetRequest extends BaseRequest {
     public GetRequest(String apiKey) {
         super(apiKey);
     }
+
+    // ############################ GET DATA AS JSON ################################
+
+    public <T> T getAsJson(Class<T> responseClass, String url) {
+
+        WebResource webResource = getWebResource(url);
+        ClientResponse response = webResource.type(JSON_TYPE).get(ClientResponse.class);
+
+        return handleResponse(responseClass, response);
+    }
+
+    // ############################ GET FILE RESPONSE ################################
 
     public File getFileResponse(String url, String documentId, String filename) {
         InputStream inputStream = null;

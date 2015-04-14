@@ -1,24 +1,30 @@
 package com.digisigner.client;
 
-import com.digisigner.client.data.Document;
-import com.digisigner.client.data.Field;
-import com.digisigner.client.data.FieldType;
-import com.digisigner.client.data.Signer;
-import com.digisigner.client.data.SignatureRequest;
-import org.junit.Test;
-
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.net.URL;
 
+import static org.junit.Assert.assertEquals;
+import org.junit.Test;
+
+import com.digisigner.client.data.Document;
+import com.digisigner.client.data.Field;
+import com.digisigner.client.data.FieldType;
+import com.digisigner.client.data.SignatureRequest;
+import com.digisigner.client.data.Signer;
+
 /**
  * The JUnit class for the DigiSigner client.
  */
 public class DigiSignerClientTest {
 
-    private static final String API_KEY = "afab279b-ef99-42dc-8b28-98907e23906d";
+    /**
+     * The api key for test.
+     * The value can be found in the DigiSigner account (Settings dialog).
+     */
+    private static final String API_KEY = "YOUR_API_KEY";
 
     private static final String TEST_SIGNER_EMAIL = "asdf.asdf@list.ru";
 
@@ -45,6 +51,42 @@ public class DigiSignerClientTest {
             // send signature request
             SignatureRequest response = client.sendSignatureRequest(signatureRequest);
             System.out.println("Signature request id " + response.getSignatureRequestId());
+        } catch (DigiSignerException e) {  // in case http code is wrong
+            System.out.println(MESSAGE + e.getMessage());
+            for (String error : e.getErrors()) {
+                System.out.println(error);
+            }
+        }
+    }
+
+    @Test
+    public void testGetSignatureRequest() throws FileNotFoundException {
+
+        // API client
+        DigiSignerClient client = new DigiSignerClient(API_KEY);
+
+        // signature request to send
+        SignatureRequest signatureRequestToSend = new SignatureRequest();
+
+
+        try {
+            // add document
+            Document document1 = buildDocumentFromFile();
+            signatureRequestToSend.addDocument(document1);
+
+            Document document2 = buildDocumentFromInputStream();
+            signatureRequestToSend.addDocument(document2);
+
+            // send signature request
+            SignatureRequest response = client.sendSignatureRequest(signatureRequestToSend);
+            String signatureRequestId = response.getSignatureRequestId();
+            System.out.println("Signature request id " + signatureRequestId);
+
+            // get signature request ID
+            SignatureRequest result = client.getSignatureRequest(signatureRequestId);
+            assertEquals("The signature request has wrong signature ID", signatureRequestId,
+                    result.getSignatureRequestId());
+
         } catch (DigiSignerException e) {  // in case http code is wrong
             System.out.println(MESSAGE + e.getMessage());
             for (String error : e.getErrors()) {

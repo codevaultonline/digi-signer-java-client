@@ -8,18 +8,12 @@ import java.io.PrintWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
-import com.sun.jersey.api.client.Client;
 import com.sun.jersey.api.client.ClientResponse;
 import com.sun.jersey.api.client.WebResource;
-import com.sun.jersey.api.client.config.ClientConfig;
-import com.sun.jersey.api.client.config.DefaultClientConfig;
-import com.sun.jersey.api.client.filter.HTTPBasicAuthFilter;
-import com.sun.jersey.api.json.JSONConfiguration;
 import org.apache.log4j.Logger;
 
 import com.digisigner.client.DigiSignerException;
 import com.digisigner.client.data.Document;
-import com.digisigner.client.data.Message;
 
 /**
  * Class sends post requests to the server.
@@ -40,23 +34,10 @@ public class PostRequest extends BaseRequest {
 
     public <T> T postAsJson(Class<T> responseClass, Object object, String url) {
 
-        // Create Jersey client
-        ClientConfig clientConfig = new DefaultClientConfig();
-        clientConfig.getFeatures().put(JSONConfiguration.FEATURE_POJO_MAPPING, Boolean.TRUE);
-        Client client = Client.create(clientConfig);
-        client.addFilter(new HTTPBasicAuthFilter(getApiKey(), ""));
+        WebResource webResourcePost = getWebResource(url);
+        ClientResponse response = webResourcePost.type(JSON_TYPE).entity(object).post(ClientResponse.class, object);
 
-        WebResource webResourcePost = client.resource(url);
-        ClientResponse response = webResourcePost.type("application/json").entity(object).post(ClientResponse.class,
-                object);
-        int code = response.getStatus();
-        if (code == HttpURLConnection.HTTP_OK) {
-            return response.getEntity(responseClass);
-        }
-
-        Message message = response.getEntity(Message.class);
-        throwDigisignerException(message, code);
-        return null;
+        return handleResponse(responseClass, response);
     }
     // ############################ UPLOAD DOCUMENT METHODS ################################
 

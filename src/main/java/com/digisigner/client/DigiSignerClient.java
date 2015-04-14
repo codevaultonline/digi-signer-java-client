@@ -21,6 +21,12 @@ public class DigiSignerClient {
         this.apiKey = apiKey;
     }
 
+    /**
+     * Sends the signature request to the server.
+     *
+     * @param signatureRequest filled signature request with required data.
+     * @return result with sent signature request ID.
+     */
     public SignatureRequest sendSignatureRequest(SignatureRequest signatureRequest) {
         for (Document document : signatureRequest.getDocuments()) {
             if (document.getId() == null) {
@@ -31,6 +37,24 @@ public class DigiSignerClient {
                 Config.SIGNATURE_REQUESTS_URL);
     }
 
+    /**
+     * The get signature request to check information about signature such as signature is completed
+     * and IDs of signature request and documents.
+     *
+     * @param signatureRequestId ID of the signature request.
+     * @return {@link com.digisigner.client.data.SignatureRequest} with filled IDs and signature request data.
+     */
+    public SignatureRequest getSignatureRequest(String signatureRequestId) {
+        String url = Config.SIGNATURE_REQUESTS_URL + "/" + signatureRequestId;
+        return new GetRequest(apiKey).getAsJson(SignatureRequest.class, url);
+    }
+
+    /**
+     * Uploads current document to the server.
+     *
+     * @param document to upload.
+     * @return document with ID.
+     */
     public Document uploadDocument(Document document) {
         document.setId(callUploadDocument(document));
         return document;
@@ -38,6 +62,7 @@ public class DigiSignerClient {
 
     /**
      * Upload document and returns ID of document.
+     *
      * @param document to upload.
      * @return ID of uploaded document.
      */
@@ -46,6 +71,13 @@ public class DigiSignerClient {
         return new JSONObject(response.getContent()).getString(Config.PARAM_DOC_ID);
     }
 
+    /**
+     * Download the document by ID.
+     *
+     * @param documentId ID of document.
+     * @param fileName   the name of the document file to be saved.
+     * @return retrieved document.
+     */
     public Document getDocumentById(String documentId, String fileName) {
         File file = new GetRequest(apiKey).getFileResponse(Config.DOCUMENTS_URL, documentId, fileName);
 
