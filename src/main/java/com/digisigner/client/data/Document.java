@@ -121,4 +121,7 @@ public class Document {
         signers.add(signer);
     }
 
+    public List<Signer> getSigners() {
+        return signers;
+    }
 }

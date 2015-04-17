@@ -19,6 +19,9 @@ public class Signer {
     @XmlElement(name = "is_signature_completed")
     private Boolean signatureCompleted;
 
+    @XmlElement(name = "sign_document_url")
+    private String signDocumentUrl;
+
     @SuppressWarnings("unused")
     private Signer() { /* JAXB requires it */ }
 
@@ -36,5 +39,9 @@ public class Signer {
 
     public Boolean getSignatureCompleted() {
         return signatureCompleted;
+    }
+
+    public String getSignDocumentUrl() {
+        return signDocumentUrl;
     }
 }

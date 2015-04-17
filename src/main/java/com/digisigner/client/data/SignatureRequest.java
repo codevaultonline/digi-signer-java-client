@@ -18,6 +18,12 @@ public class SignatureRequest {
     @XmlElement(name = "signature_request_id")
     private String signatureRequestId;
 
+    /**
+     * The parameter indicates that the email notifications will be sent.
+     */
+    @XmlElement(name = "send_emails")
+    private Boolean sendEmails;
+
     @XmlElement(name = "is_completed")
     private Boolean completed;
 
@@ -34,6 +40,14 @@ public class SignatureRequest {
 
     public String getSignatureRequestId() {
         return signatureRequestId;
+    }
+
+    public Boolean getSendEmails() {
+        return sendEmails;
+    }
+
+    public void setSendEmails(Boolean sendEmails) {
+        this.sendEmails = sendEmails;
     }
 
     public Boolean getCompleted() {

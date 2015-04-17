@@ -70,6 +70,7 @@ public class DigiSignerClientTest {
 
 
         try {
+            signatureRequestToSend.setSendEmails(false);
             // add document
             Document document1 = buildDocumentFromFile();
             signatureRequestToSend.addDocument(document1);
@@ -86,6 +87,9 @@ public class DigiSignerClientTest {
             SignatureRequest result = client.getSignatureRequest(signatureRequestId);
             assertEquals("The signature request has wrong signature ID", signatureRequestId,
                     result.getSignatureRequestId());
+
+            String urlToSignFirstDocument = result.getDocuments().get(0).getSigners().get(0).getSignDocumentUrl();
+            System.out.println(urlToSignFirstDocument);
 
         } catch (DigiSignerException e) {  // in case http code is wrong
             System.out.println(MESSAGE + e.getMessage());
