@@ -27,6 +27,11 @@ public class SignatureRequest {
     @XmlElement(name = "is_completed")
     private Boolean completed;
 
+    /**
+     * The embedded parameter indicates if the sign page has to be in embedded style mode.
+     */
+    private Boolean embedded;
+
     @XmlElement(name = "documents")
     private final List<Document> documents = new ArrayList<>();
 
@@ -52,5 +57,13 @@ public class SignatureRequest {
 
     public Boolean getCompleted() {
         return completed;
+    }
+
+    public Boolean getEmbedded() {
+        return embedded;
+    }
+
+    public void setEmbedded(Boolean embedded) {
+        this.embedded = embedded;
     }
 }
