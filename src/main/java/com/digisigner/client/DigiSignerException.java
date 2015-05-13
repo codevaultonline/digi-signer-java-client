@@ -1,5 +1,6 @@
 package com.digisigner.client;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @SuppressWarnings("serial")
@@ -14,7 +15,7 @@ public class DigiSignerException extends RuntimeException {
 
     public DigiSignerException(String message, List<String> errors, Integer httpCode) {
         super(message);
-        this.errors = errors;
+        this.errors = errors == null ? new ArrayList<String>() : errors;
         this.httpCode = httpCode;
     }
 

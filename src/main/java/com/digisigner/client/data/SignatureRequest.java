@@ -24,13 +24,22 @@ public class SignatureRequest {
     @XmlElement(name = "send_emails")
     private Boolean sendEmails;
 
-    @XmlElement(name = "is_completed")
-    private Boolean completed;
-
     /**
      * The embedded parameter indicates if the sign page has to be in embedded style mode.
      */
     private Boolean embedded;
+
+    @XmlElement(name = "redirect_for_signing_to_url")
+    private String redirectForSigningToUrl;
+
+    @XmlElement(name = "use_text_tags")
+    private boolean useTextTags = false;
+
+    @XmlElement(name = "hide_text_tags")
+    private boolean hideTextTags = false;
+
+    @XmlElement(name = "is_completed")
+    private Boolean completed;
 
     @XmlElement(name = "documents")
     private final List<Document> documents = new ArrayList<>();
@@ -55,8 +64,12 @@ public class SignatureRequest {
         this.sendEmails = sendEmails;
     }
 
-    public Boolean getCompleted() {
-        return completed;
+    public String getRedirectForSigningToUrl() {
+        return redirectForSigningToUrl;
+    }
+
+    public void setRedirectForSigningToUrl(String redirectForSigningToUrl) {
+        this.redirectForSigningToUrl = redirectForSigningToUrl;
     }
 
     public Boolean getEmbedded() {
@@ -65,5 +78,25 @@ public class SignatureRequest {
 
     public void setEmbedded(Boolean embedded) {
         this.embedded = embedded;
+    }
+
+    public boolean isUseTextTags() {
+        return useTextTags;
+    }
+
+    public void setUseTextTags(boolean useTextTags) {
+        this.useTextTags = useTextTags;
+    }
+
+    public boolean isHideTextTags() {
+        return hideTextTags;
+    }
+
+    public void setHideTextTags(boolean hideTextTags) {
+        this.hideTextTags = hideTextTags;
+    }
+
+    public Boolean getCompleted() {
+        return completed;
     }
 }
