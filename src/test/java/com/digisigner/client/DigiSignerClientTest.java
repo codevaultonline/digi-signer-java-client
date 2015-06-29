@@ -44,6 +44,8 @@ public class DigiSignerClientTest {
             // add document
             Document document1 = buildDocumentFromFile();
             signatureRequest.addDocument(document1);
+            signatureRequest.setEmbedded(true);
+            signatureRequest.setRedirectForSigningToUrl("www.encoded.com");
 
             Document document2 = buildDocumentFromInputStream();
             signatureRequest.addDocument(document2);
@@ -70,7 +72,9 @@ public class DigiSignerClientTest {
 
 
         try {
-            signatureRequestToSend.setSendEmails(false);
+            signatureRequestToSend.setSendEmails(true);
+            signatureRequestToSend.setRedirectForSigningToUrl("http://www.encoded.com?a=b");
+            signatureRequestToSend.setEmbedded(true);
             // add document
             Document document1 = buildDocumentFromFile();
             signatureRequestToSend.addDocument(document1);
@@ -143,6 +147,7 @@ public class DigiSignerClientTest {
 
         // add signer to document
         Signer signer = new Signer(TEST_SIGNER_EMAIL);
+        signer.setRole("manager");
         document.addSigner(signer);
 
         int[] rectangle1 = new int[]{0, 0, 200, 100};
@@ -154,7 +159,6 @@ public class DigiSignerClientTest {
         Field field2 = new Field(0, rectangle2, FieldType.TEXT);
         field2.setRequired(false);
         signer.addField(field2);
-
         return document;
     }
 
@@ -165,6 +169,7 @@ public class DigiSignerClientTest {
 
         // add signer to document
         Signer signer = new Signer(TEST_SIGNER_EMAIL);
+        signer.setRole("client");
         document1.addSigner(signer);
 
         int[] rectangle1 = new int[]{0, 0, 200, 100};

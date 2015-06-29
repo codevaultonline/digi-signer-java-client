@@ -8,11 +8,16 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
+import org.codehaus.jackson.annotate.JsonIgnoreProperties;
+
 @XmlRootElement
 @XmlAccessorType(XmlAccessType.FIELD)
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class Signer {
 
     private String email;
+
+    private String role;
 
     private final List<Field> fields = new ArrayList<>();
 
@@ -35,6 +40,14 @@ public class Signer {
 
     public String getEmail() {
         return email;
+    }
+
+    public void setRole(String role) {
+        this.role = role;
+    }
+
+    public String getRole() {
+        return role;
     }
 
     public Boolean getSignatureCompleted() {
