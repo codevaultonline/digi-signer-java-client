@@ -35,6 +35,9 @@ public class SignatureRequest {
     @XmlElement(name = "redirect_for_signing_to_url")
     private String redirectForSigningToUrl;
 
+    @XmlElement(name = "redirect_after_signing_to_url")
+    private String redirectAfterSigningToUrl;
+
     @XmlElement(name = "use_text_tags")
     private boolean useTextTags = false;
 
@@ -73,6 +76,14 @@ public class SignatureRequest {
 
     public void setRedirectForSigningToUrl(String redirectForSigningToUrl) {
         this.redirectForSigningToUrl = redirectForSigningToUrl;
+    }
+
+    public String getRedirectAfterSigningToUrl() {
+        return redirectAfterSigningToUrl;
+    }
+
+    public void setRedirectAfterSigningToUrl(String redirectAfterSigningToUrl) {
+        this.redirectAfterSigningToUrl = redirectAfterSigningToUrl;
     }
 
     public Boolean getEmbedded() {
