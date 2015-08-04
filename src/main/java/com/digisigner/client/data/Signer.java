@@ -27,6 +27,9 @@ public class Signer {
     @XmlElement(name = "sign_document_url")
     private String signDocumentUrl;
 
+    @XmlElement(name = "access_code")
+    private String accessCode;
+
     @SuppressWarnings("unused")
     private Signer() { /* JAXB requires it */ }
 
@@ -56,5 +59,13 @@ public class Signer {
 
     public String getSignDocumentUrl() {
         return signDocumentUrl;
+    }
+
+    public String getAccessCode() {
+        return accessCode;
+    }
+
+    public void setAccessCode(String accessCode) {
+        this.accessCode = accessCode;
     }
 }
