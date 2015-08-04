@@ -16,9 +16,16 @@ import com.digisigner.client.http.Response;
  */
 public class DigiSignerClient {
     private final String apiKey;
+    private final String serverUrl;
 
     public DigiSignerClient(String apiKey) {
         this.apiKey = apiKey;
+        serverUrl = Config.DEFAULT_SERVER_URL;
+    }
+
+    public DigiSignerClient(String serverUrl, String apiKey) {
+        this.apiKey = apiKey;
+        this.serverUrl = serverUrl;
     }
 
     /**
@@ -34,7 +41,7 @@ public class DigiSignerClient {
             }
         }
         return new PostRequest(apiKey).postAsJson(SignatureRequest.class, signatureRequest,
-                Config.SIGNATURE_REQUESTS_URL);
+                Config.getSignatureRequestsUrl(serverUrl));
     }
 
     /**
@@ -45,7 +52,7 @@ public class DigiSignerClient {
      * @return {@link com.digisigner.client.data.SignatureRequest} with filled IDs and signature request data.
      */
     public SignatureRequest getSignatureRequest(String signatureRequestId) {
-        String url = Config.SIGNATURE_REQUESTS_URL + "/" + signatureRequestId;
+        String url = Config.getSignatureRequestsUrl(serverUrl) + "/" + signatureRequestId;
         return new GetRequest(apiKey).getAsJson(SignatureRequest.class, url);
     }
 
@@ -67,7 +74,7 @@ public class DigiSignerClient {
      * @return ID of uploaded document.
      */
     private String callUploadDocument(Document document) {
-        Response response = new PostRequest(apiKey).sendDocumentToServer(Config.DOCUMENTS_URL, document);
+        Response response = new PostRequest(apiKey).sendDocumentToServer(Config.getDocumentUrl(serverUrl), document);
         return new JSONObject(response.getContent()).getString(Config.PARAM_DOC_ID);
     }
 
@@ -79,7 +86,7 @@ public class DigiSignerClient {
      * @return retrieved document.
      */
     public Document getDocumentById(String documentId, String fileName) {
-        File file = new GetRequest(apiKey).getFileResponse(Config.DOCUMENTS_URL, documentId, fileName);
+        File file = new GetRequest(apiKey).getFileResponse(Config.getDocumentUrl(serverUrl), documentId, fileName);
 
         Document document = new Document(file);
         document.setId(documentId);
