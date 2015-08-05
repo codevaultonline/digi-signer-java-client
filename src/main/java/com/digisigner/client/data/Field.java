@@ -25,6 +25,13 @@ public class Field {
         this.type = type;
     }
 
+    public Field(int page, int[] rectangle, FieldType type, boolean required) {
+    	this.page = page;
+    	this.rectangle = rectangle;
+    	this.type = type;
+    	this.required = required;
+    }
+    
     public int getPage() {
         return page;
     }
