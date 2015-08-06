@@ -93,13 +93,19 @@ public class PostRequest extends BaseRequest {
     }
 
     private void writeToOutputStream(Document document, OutputStream out) throws IOException {
-        InputStream inputStream = document.getInputStream();
-        byte[] buffer = new byte[4096];
-        int bytesRead;
-
-        while ((bytesRead = inputStream.read(buffer)) != -1) {
-            out.write(buffer, 0, bytesRead);
-        }
+    	InputStream inputStream = null;
+    	try {
+	        inputStream = document.getInputStream();
+	        byte[] buffer = new byte[4096];
+	        int bytesRead;
+	
+	        while ((bytesRead = inputStream.read(buffer)) != -1) {
+	            out.write(buffer, 0, bytesRead);
+	        }
+    	}
+    	finally {
+    		if (inputStream != null) inputStream.close();
+    	}
     }
 
     private Response callService(HttpURLConnection connection) throws IOException {
