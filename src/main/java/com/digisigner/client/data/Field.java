@@ -17,6 +17,8 @@ public class Field {
 
     private final FieldType type;
 
+    private String label;
+
     private boolean required = true; // field is required by default
 
     public Field(int page, int[] rectangle, FieldType type) {
@@ -25,10 +27,11 @@ public class Field {
         this.type = type;
     }
 
-    public Field(int page, int[] rectangle, FieldType type, boolean required) {
+    public Field(int page, int[] rectangle, FieldType type, String label, boolean required) {
     	this.page = page;
     	this.rectangle = rectangle;
     	this.type = type;
+        this.label = label;
     	this.required = required;
     }
     
@@ -42,6 +45,14 @@ public class Field {
 
     public FieldType getType() {
         return type;
+    }
+
+    public void setLabel(String label) {
+        this.label = label;
+    }
+
+    public String getLabel() {
+        return label;
     }
 
     public boolean isRequired() {
