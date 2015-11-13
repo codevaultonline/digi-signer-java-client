@@ -5,6 +5,7 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.net.URL;
+import java.util.Calendar;
 
 import static org.junit.Assert.assertEquals;
 import org.junit.Test;
@@ -74,6 +75,7 @@ public class DigiSignerClientTest {
         try {
             signatureRequestToSend.setSendEmails(true);
             signatureRequestToSend.setRedirectForSigningToUrl("http://www.encoded.com?a=b");
+            signatureRequestToSend.setRedirectAfterSigningToUrl("http://www.after.com?a=b");
             signatureRequestToSend.setEmbedded(true);
             // add document
             Document document1 = buildDocumentFromFile();
@@ -92,8 +94,11 @@ public class DigiSignerClientTest {
             assertEquals("The signature request has wrong signature ID", signatureRequestId,
                     result.getSignatureRequestId());
 
-            String urlToSignFirstDocument = result.getDocuments().get(0).getSigners().get(0).getSignDocumentUrl();
-            System.out.println(urlToSignFirstDocument);
+            String urlToSignFirstDocument1 = result.getDocuments().get(0).getSigners().get(0).getSignDocumentUrl();
+            System.out.println(urlToSignFirstDocument1);
+
+            String urlToSignFirstDocument2 = result.getDocuments().get(1).getSigners().get(0).getSignDocumentUrl();
+            System.out.println(urlToSignFirstDocument2);
 
         } catch (DigiSignerException e) {  // in case http code is wrong
             System.out.println(MESSAGE + e.getMessage());
@@ -153,11 +158,13 @@ public class DigiSignerClientTest {
         int[] rectangle1 = new int[]{0, 0, 200, 100};
         Field field1 = new Field(0, rectangle1, FieldType.SIGNATURE);
         field1.setRequired(false);
+        field1.setContent("Test1");
         signer.addField(field1);
 
         int[] rectangle2 = new int[]{300, 0, 500, 100};
         Field field2 = new Field(0, rectangle2, FieldType.TEXT);
         field2.setRequired(false);
+        field2.setContent("Test2");
         signer.addField(field2);
         return document;
     }
@@ -175,12 +182,23 @@ public class DigiSignerClientTest {
         int[] rectangle1 = new int[]{0, 0, 200, 100};
         Field field1 = new Field(0, rectangle1, FieldType.SIGNATURE);
         field1.setRequired(false);
+        field1.setContent("Test3");
         signer.addField(field1);
 
-        int[] rectangle2 = new int[]{300, 0, 500, 100};
+        int[] rectangle2 = new int[]{320, 0, 500, 100};
         Field field2 = new Field(0, rectangle2, FieldType.TEXT);
-        field2.setRequired(false);
+        field2.setContent("Test4");
         signer.addField(field2);
+
+        int[] rectangle3 = new int[]{0, 0, 100, 100};
+        Field field3 = new Field(1, rectangle3, FieldType.CHECKBOX);
+        field3.setContent("Y");
+        signer.addField(field3);
+
+        int[] rectangle4 = new int[]{320, 0, 500, 100};
+        Field field4 = new Field(1, rectangle4, FieldType.DATE);
+        field4.setContent(Calendar.getInstance().getTime().toString());
+        signer.addField(field4);
 
         return document1;
     }

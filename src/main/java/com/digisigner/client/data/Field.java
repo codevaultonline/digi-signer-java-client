@@ -17,6 +17,8 @@ public class Field {
 
     private final FieldType type;
 
+    private String content;
+
     private String label;
 
     private boolean required = true; // field is required by default
@@ -61,5 +63,13 @@ public class Field {
 
     public void setRequired(boolean required) {
         this.required = required;
+    }
+
+    public String getContent() {
+        return content;
+    }
+
+    public void setContent(String content) {
+        this.content = content;
     }
 }
