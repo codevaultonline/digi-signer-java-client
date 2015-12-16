@@ -9,7 +9,7 @@ import com.digisigner.client.data.SignatureRequest;
 import com.digisigner.client.http.Config;
 import com.digisigner.client.http.GetRequest;
 import com.digisigner.client.http.PostRequest;
-import com.digisigner.client.http.Response;
+import com.digisigner.client.http.ClientResponse;
 
 /**
  * Main class for DigiSigner client.
@@ -74,8 +74,9 @@ public class DigiSignerClient {
      * @return ID of uploaded document.
      */
     private String callUploadDocument(Document document) {
-        Response response = new PostRequest(apiKey).sendDocumentToServer(Config.getDocumentUrl(serverUrl), document);
-        return new JSONObject(response.getContent()).getString(Config.PARAM_DOC_ID);
+        ClientResponse clientResponse = new PostRequest(apiKey).sendDocumentToServer(Config.getDocumentUrl(serverUrl),
+                document);
+        return new JSONObject(clientResponse.getContent()).getString(Config.PARAM_DOC_ID);
     }
 
     /**

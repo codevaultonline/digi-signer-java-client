@@ -6,15 +6,13 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
+import javax.ws.rs.client.Client;
+import javax.ws.rs.client.ClientBuilder;
+import javax.ws.rs.client.WebTarget;
+import javax.ws.rs.core.Response;
 import javax.xml.bind.DatatypeConverter;
 
-import com.sun.jersey.api.client.Client;
-import com.sun.jersey.api.client.ClientResponse;
-import com.sun.jersey.api.client.WebResource;
-import com.sun.jersey.api.client.config.ClientConfig;
-import com.sun.jersey.api.client.config.DefaultClientConfig;
-import com.sun.jersey.api.client.filter.HTTPBasicAuthFilter;
-import com.sun.jersey.api.json.JSONConfiguration;
+import org.glassfish.jersey.client.authentication.HttpAuthenticationFeature;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -39,14 +37,15 @@ public class BaseRequest {
         httpConn.setRequestProperty("authorization", authorization);
     }
 
-    protected WebResource getWebResource(String url) {
+    protected WebTarget getWebResource(String url) {
         // Create Jersey client
-        ClientConfig clientConfig = new DefaultClientConfig();
-        clientConfig.getFeatures().put(JSONConfiguration.FEATURE_POJO_MAPPING, Boolean.TRUE);
-        Client client = Client.create(clientConfig);
-        client.addFilter(new HTTPBasicAuthFilter(getApiKey(), ""));
+        Client client = ClientBuilder.newClient();
+        WebTarget target = client.target(url);
 
-        return client.resource(url);
+        HttpAuthenticationFeature feature = HttpAuthenticationFeature.basicBuilder()
+                .credentials(getApiKey(), "").build();
+        target.register(feature);
+        return target;
     }
 
     protected static String convertStreamToString(InputStream is) {
@@ -64,14 +63,14 @@ public class BaseRequest {
         }
     }
 
-    protected <T> T handleResponse(Class<T> responseClass, ClientResponse response) {
+    protected <T> T handleResponse(Class<T> responseClass, Response response) {
 
         int code = response.getStatus();
         if (code == HttpURLConnection.HTTP_OK) {
-            return response.getEntity(responseClass);
+            return response.readEntity(responseClass);
         }
 
-        Message message = response.getEntity(Message.class);
+        Message message = response.readEntity(Message.class);
         throwDigisignerException(message, code);
         return null;
     }
@@ -79,8 +78,10 @@ public class BaseRequest {
     private void throwDigisignerException(Message message, int code) {
         try {
             List<String> detailsErrors = new ArrayList<>();
-            for (Message detailsMessage : message.getErrors()) {
-                detailsErrors.add(detailsMessage.getMessage());
+            if (message.getErrors() != null) {
+                for (Message detailsMessage : message.getErrors()) {
+                    detailsErrors.add(detailsMessage.getMessage());
+                }
             }
             throw new DigiSignerException(message.getMessage(), detailsErrors, code);
         } catch (JSONException ex) {

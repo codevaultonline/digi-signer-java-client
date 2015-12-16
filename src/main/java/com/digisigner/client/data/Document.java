@@ -7,13 +7,13 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.log4j.Logger;
-import org.codehaus.jackson.annotate.JsonIgnoreProperties;
-
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
+
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import org.apache.log4j.Logger;
 
 /**
  * The document entity represents type of document in all document requests.

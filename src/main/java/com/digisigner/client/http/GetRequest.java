@@ -8,8 +8,9 @@ import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.StandardCopyOption;
 
-import com.sun.jersey.api.client.ClientResponse;
-import com.sun.jersey.api.client.WebResource;
+import javax.ws.rs.client.WebTarget;
+import javax.ws.rs.core.Response;
+
 import org.apache.log4j.Logger;
 
 import com.digisigner.client.DigiSignerException;
@@ -30,8 +31,8 @@ public class GetRequest extends BaseRequest {
 
     public <T> T getAsJson(Class<T> responseClass, String url) {
 
-        WebResource webResource = getWebResource(url);
-        ClientResponse response = webResource.type(JSON_TYPE).get(ClientResponse.class);
+        WebTarget webResource = getWebResource(url);
+        Response response = webResource.request(JSON_TYPE).get();
 
         return handleResponse(responseClass, response);
     }

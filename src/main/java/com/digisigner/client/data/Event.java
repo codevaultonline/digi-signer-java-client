@@ -5,7 +5,7 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
-import org.codehaus.jackson.annotate.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 /**
  * The class for the event callback notification.
@@ -24,7 +24,6 @@ public class Event {
     private String eventType;
     @XmlElement(name = SIGNATURE_REQUEST_NAME)
     private SignatureRequest signatureRequest;
-
 
     public long getEventTime() {
         return eventTime;

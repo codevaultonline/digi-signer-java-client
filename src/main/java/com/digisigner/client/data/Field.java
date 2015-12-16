@@ -4,24 +4,28 @@ import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlRootElement;
 
-import org.codehaus.jackson.annotate.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @XmlRootElement
 @XmlAccessorType(XmlAccessType.FIELD)
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Field {
 
-    private final int page;
+    private int page;
 
-    private final int[] rectangle;
+    private int[] rectangle;
 
-    private final FieldType type;
+    private FieldType type;
 
     private String content;
 
     private String label;
 
     private boolean required = true; // field is required by default
+
+    // required for jaxb init.
+    private Field() {
+    }
 
     public Field(int page, int[] rectangle, FieldType type) {
         this.page = page;

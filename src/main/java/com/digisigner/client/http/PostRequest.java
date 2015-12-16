@@ -8,8 +8,10 @@ import java.io.PrintWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
-import com.sun.jersey.api.client.ClientResponse;
-import com.sun.jersey.api.client.WebResource;
+import javax.ws.rs.client.Entity;
+import javax.ws.rs.client.WebTarget;
+import javax.ws.rs.core.Response;
+
 import org.apache.log4j.Logger;
 
 import com.digisigner.client.DigiSignerException;
@@ -34,14 +36,14 @@ public class PostRequest extends BaseRequest {
 
     public <T> T postAsJson(Class<T> responseClass, Object object, String url) {
 
-        WebResource webResourcePost = getWebResource(url);
-        ClientResponse response = webResourcePost.type(JSON_TYPE).entity(object).post(ClientResponse.class, object);
+        WebTarget webResourcePost = getWebResource(url);
+        Response response = webResourcePost.request(JSON_TYPE).post(Entity.json(object));
 
         return handleResponse(responseClass, response);
     }
     // ############################ UPLOAD DOCUMENT METHODS ################################
 
-    public Response sendDocumentToServer(String url, Document document) {
+    public ClientResponse sendDocumentToServer(String url, Document document) {
 
         PrintWriter writer = null;
         try {
@@ -108,14 +110,14 @@ public class PostRequest extends BaseRequest {
     	}
     }
 
-    private Response callService(HttpURLConnection connection) throws IOException {
+    private ClientResponse callService(HttpURLConnection connection) throws IOException {
         int code = connection.getResponseCode();
         String responseStr;
         InputStream response;
         if (code == HttpURLConnection.HTTP_OK) {
             response = connection.getInputStream();
             responseStr = convertStreamToString(response);
-            return new Response(code, responseStr);
+            return new ClientResponse(code, responseStr);
         }
 
         response = connection.getErrorStream();
