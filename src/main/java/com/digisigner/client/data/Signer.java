@@ -21,6 +21,9 @@ public class Signer {
 
     private final List<Field> fields = new ArrayList<>();
 
+    @XmlElement(name = "pdf_fields")
+    private List<PdfField> pdfFields = new ArrayList<>();
+
     @XmlElement(name = "is_signature_completed")
     private Boolean signatureCompleted;
 
@@ -39,6 +42,10 @@ public class Signer {
 
     public void addField(Field field) {
         fields.add(field);
+    }
+
+    public void addPdfField(PdfField pdfField) {
+        pdfFields.add(pdfField);
     }
 
     public String getEmail() {
