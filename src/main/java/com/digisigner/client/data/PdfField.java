@@ -23,6 +23,9 @@ public class PdfField {
     @XmlElement(name = "read_only")
     private boolean readOnly = false;
 
+    @XmlElement(name = "is_pdf_field")
+    private boolean isPdfField = false;
+
     public PdfField() { /* JAXB requires it */ }
 
 
@@ -64,5 +67,13 @@ public class PdfField {
 
     public void setReadOnly(boolean readOnly) {
         this.readOnly = readOnly;
+    }
+
+    public boolean isPdfField() {
+        return isPdfField;
+    }
+
+    public void setPdfField(boolean isPdfField) {
+        this.isPdfField = isPdfField;
     }
 }
