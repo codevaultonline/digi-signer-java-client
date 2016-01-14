@@ -14,6 +14,8 @@ public class PdfField {
 
     private String name; // field name as specified in PDF document
 
+    private Integer index;
+
     private String content;
 
     private String label;
@@ -35,6 +37,14 @@ public class PdfField {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public Integer getIndex() {
+        return index;
+    }
+
+    public void setIndex(Integer index) {
+        this.index = index;
     }
 
     public String getContent() {
