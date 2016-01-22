@@ -14,13 +14,14 @@ public class PdfField {
 
     private String name; // field name as specified in PDF document
 
-    private Integer index;
-
     private String content;
 
     private String label;
 
-    private boolean required = true;
+    /**
+     * If nothing is specified the default value for check boxes is false, but for all other fields it is true.
+     */
+    private Boolean required;
 
     @XmlElement(name = "read_only")
     private boolean readOnly = false;
@@ -34,14 +35,6 @@ public class PdfField {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public Integer getIndex() {
-        return index;
-    }
-
-    public void setIndex(Integer index) {
-        this.index = index;
     }
 
     public String getContent() {

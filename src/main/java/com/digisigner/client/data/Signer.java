@@ -24,6 +24,9 @@ public class Signer {
     @XmlElement(name = "pdf_fields")
     private List<PdfField> pdfFields = new ArrayList<>();
 
+    @XmlElement(name = "use_all_pdf_fields")
+    private boolean useAllPdfFields = false;
+
     @XmlElement(name = "is_signature_completed")
     private Boolean signatureCompleted;
 
@@ -50,6 +53,14 @@ public class Signer {
 
     public String getEmail() {
         return email;
+    }
+
+    public boolean isUseAllPdfFields() {
+        return useAllPdfFields;
+    }
+
+    public void setUseAllPdfFields(boolean useAllPdfFields) {
+        this.useAllPdfFields = useAllPdfFields;
     }
 
     public void setRole(String role) {

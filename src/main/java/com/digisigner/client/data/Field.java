@@ -2,6 +2,7 @@ package com.digisigner.client.data;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
@@ -22,6 +23,9 @@ public class Field {
     private String label;
 
     private boolean required = true; // field is required by default
+
+    @XmlElement(name = "read_only")
+    private Boolean readOnly;
 
     // required for jaxb init.
     private Field() {
@@ -75,5 +79,13 @@ public class Field {
 
     public void setContent(String content) {
         this.content = content;
+    }
+    
+    public Boolean getReadOnly() {
+        return readOnly;
+    }
+
+    public void setReadOnly(Boolean readOnly) {
+        this.readOnly = readOnly;
     }
 }
