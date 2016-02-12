@@ -26,7 +26,13 @@ public class PdfField {
     @XmlElement(name = "read_only")
     private boolean readOnly = false;
 
-    public PdfField() { /* JAXB requires it */ }
+    // required for jaxb init.
+    @SuppressWarnings("unused")
+	private PdfField() {}    
+    
+    public PdfField(String name) {
+    	this.name = name;
+    }
 
 
     public String getName() {

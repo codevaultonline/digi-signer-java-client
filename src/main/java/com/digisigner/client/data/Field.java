@@ -28,8 +28,8 @@ public class Field {
     private Boolean readOnly;
 
     // required for jaxb init.
-    private Field() {
-    }
+    @SuppressWarnings("unused")
+	private Field() {}
 
     public Field(int page, int[] rectangle, FieldType type) {
         this.page = page;

@@ -10,6 +10,7 @@ import java.net.URL;
 
 import javax.ws.rs.client.Entity;
 import javax.ws.rs.client.WebTarget;
+import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 import org.apache.log4j.Logger;
@@ -37,7 +38,9 @@ public class PostRequest extends BaseRequest {
     public <T> T postAsJson(Class<T> responseClass, Object object, String url) {
 
         WebTarget webResourcePost = getWebResource(url);
-        Response response = webResourcePost.request(JSON_TYPE).post(Entity.json(object));
+        MediaType mediaType = MediaType.APPLICATION_JSON_TYPE.withCharset(ENCODING);
+        Entity<Object> entity = Entity.entity(object, mediaType);
+		Response response = webResourcePost.request(JSON_TYPE).post(entity);
 
         return handleResponse(responseClass, response);
     }
