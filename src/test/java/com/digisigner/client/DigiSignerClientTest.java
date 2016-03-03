@@ -218,7 +218,7 @@ public class DigiSignerClientTest {
             // upload document
             URL url = getClass().getResource("/document.pdf");
             Document document = new Document(new File(url.getFile()), "fromJUNIT.pdf");
-            String documentId = client.uploadDocument(document).getId();
+            Document uploadedDocument = client.uploadDocument(document);
 
             // create list of signatures
             int page = 0;
@@ -237,7 +237,7 @@ public class DigiSignerClientTest {
             signatures.add(signature2);
 
             // add signatures to document
-            client.addContentToDocument(documentId, signatures);
+            client.addContentToDocument(uploadedDocument.getId(), signatures);
         } catch (DigiSignerException e) { // in case http code is wrong
             System.out.println(MESSAGE + e.getMessage());
             for (String error : e.getErrors()) {
