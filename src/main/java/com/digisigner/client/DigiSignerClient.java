@@ -1,15 +1,18 @@
 package com.digisigner.client;
 
 import java.io.File;
+import java.util.List;
 
 import org.json.JSONObject;
 
 import com.digisigner.client.data.Document;
+import com.digisigner.client.data.DocumentContent;
+import com.digisigner.client.data.Signature;
 import com.digisigner.client.data.SignatureRequest;
+import com.digisigner.client.http.ClientResponse;
 import com.digisigner.client.http.Config;
 import com.digisigner.client.http.GetRequest;
 import com.digisigner.client.http.PostRequest;
-import com.digisigner.client.http.ClientResponse;
 
 /**
  * Main class for DigiSigner client.
@@ -92,5 +95,17 @@ public class DigiSignerClient {
         Document document = new Document(file);
         document.setId(documentId);
         return document;
+    }
+
+    /**
+     * Adds content to the document after given document ID.
+     *
+     * @param documentId to insert content.
+     * @param signatures will be rendered on the document.
+     */
+    public void addContentToDocument(String documentId, List<Signature> signatures) {
+
+        String url = Config.getContentUrl(serverUrl, documentId);
+        new PostRequest(apiKey).postAsJson(Object.class, new DocumentContent(signatures), url);
     }
 }
