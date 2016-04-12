@@ -12,9 +12,11 @@ import java.util.List;
 import javax.xml.bind.DatatypeConverter;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 import org.junit.Test;
 
 import com.digisigner.client.data.Document;
+import com.digisigner.client.data.DocumentFields;
 import com.digisigner.client.data.Field;
 import com.digisigner.client.data.FieldType;
 import com.digisigner.client.data.Signature;
@@ -239,6 +241,44 @@ public class DigiSignerClientTest {
             // add signatures to document
             client.addContentToDocument(uploadedDocument.getId(), signatures);
         } catch (DigiSignerException e) { // in case http code is wrong
+            System.out.println(MESSAGE + e.getMessage());
+            for (String error : e.getErrors()) {
+                System.out.println(error);
+            }
+        }
+    }
+
+    @Test
+    public void testGetDocumentFields() throws FileNotFoundException {
+
+        // API client
+        DigiSignerClient client = new DigiSignerClient(API_KEY);
+
+        // signature request to send
+        SignatureRequest signatureRequestToSend = new SignatureRequest();
+
+        try {
+            // add document
+            Document document = buildDocumentFromFile();
+            signatureRequestToSend.addDocument(document);
+
+            // send signature request
+            SignatureRequest response = client.sendSignatureRequest(signatureRequestToSend);
+            String signatureRequestId = response.getSignatureRequestId();
+
+            // get signature request ID
+            SignatureRequest request = client.getSignatureRequest(signatureRequestId);
+            assertEquals("The signature request has wrong signature ID", signatureRequestId,
+                    request.getSignatureRequestId());
+
+            String documentId = request.getDocuments().get(0).getId();
+            // get fields of document
+            DocumentFields documentFields = client.getDocumentFields(documentId);
+            assertNotNull(documentFields.getDocumentFields());
+            System.out.println("Document fields count is: " + documentFields.getDocumentFields().size());
+
+
+        } catch (DigiSignerException e) {  // in case http code is wrong
             System.out.println(MESSAGE + e.getMessage());
             for (String error : e.getErrors()) {
                 System.out.println(error);

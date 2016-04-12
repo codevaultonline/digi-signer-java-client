@@ -7,6 +7,7 @@ import org.json.JSONObject;
 
 import com.digisigner.client.data.Document;
 import com.digisigner.client.data.DocumentContent;
+import com.digisigner.client.data.DocumentFields;
 import com.digisigner.client.data.Signature;
 import com.digisigner.client.data.SignatureRequest;
 import com.digisigner.client.http.ClientResponse;
@@ -95,6 +96,15 @@ public class DigiSignerClient {
         Document document = new Document(file);
         document.setId(documentId);
         return document;
+    }
+
+    /**
+     * Returns document fields for a document.
+     */
+    public DocumentFields getDocumentFields(String documentId) {
+
+        String url = Config.getFieldsUrl(serverUrl, documentId);
+        return new GetRequest(apiKey).getAsJson(DocumentFields.class, url);
     }
 
     /**
