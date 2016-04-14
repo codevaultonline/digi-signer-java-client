@@ -8,7 +8,9 @@ import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.StandardCopyOption;
 
+import javax.ws.rs.client.Entity;
 import javax.ws.rs.client.WebTarget;
+import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 import org.apache.log4j.Logger;
@@ -32,7 +34,8 @@ public class GetRequest extends BaseRequest {
     public <T> T getAsJson(Class<T> responseClass, String url) {
 
         WebTarget webResource = getWebResource(url);
-        Response response = webResource.request(JSON_TYPE).get();
+        MediaType mediaType = MediaType.APPLICATION_JSON_TYPE.withCharset(ENCODING);
+        Response response = webResource.request(mediaType).get();
 
         return handleResponse(responseClass, response);
     }
