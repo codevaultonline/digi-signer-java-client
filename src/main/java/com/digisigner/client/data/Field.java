@@ -18,6 +18,8 @@ public class Field {
 
     private FieldType type;
 
+    private String name;
+
     private String content;
 
     private String label;
@@ -71,6 +73,14 @@ public class Field {
 
     public void setRequired(boolean required) {
         this.required = required;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     public String getContent() {
