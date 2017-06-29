@@ -58,6 +58,10 @@ public class Document {
         this.inputStream = inputStream;
     }
 
+    public Document(String id) {
+        this.id = id;
+    }
+
     public String getId() {
         return id;
     }
