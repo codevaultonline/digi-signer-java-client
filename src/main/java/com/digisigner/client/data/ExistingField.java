@@ -15,6 +15,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class ExistingField {
 
+    @XmlElement(name = "api_id")
     private String apiId;
 
     private String content;
