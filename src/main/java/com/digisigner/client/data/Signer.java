@@ -27,6 +27,9 @@ public class Signer {
     @XmlElement(name = "use_all_pdf_fields")
     private boolean useAllPdfFields = false;
 
+    @XmlElement(name = "existing_fields")
+    private List<ExistingField> existingFields = new ArrayList<>();
+
     @XmlElement(name = "is_signature_completed")
     private Boolean signatureCompleted;
 
@@ -35,9 +38,6 @@ public class Signer {
 
     @XmlElement(name = "access_code")
     private String accessCode;
-
-    @XmlElement(name = "existing_fields")
-    private final List<ExistingField> existing_fields = new ArrayList<>();
 
     @SuppressWarnings("unused")
     private Signer() { /* JAXB requires it */ }
@@ -52,6 +52,10 @@ public class Signer {
 
     public void addPdfField(PdfField pdfField) {
         pdfFields.add(pdfField);
+    }
+
+    public void addExistingField(ExistingField existingField) {
+        existingFields.add(existingField);
     }
 
     public String getEmail() {
