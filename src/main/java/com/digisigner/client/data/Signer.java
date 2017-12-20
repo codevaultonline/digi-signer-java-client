@@ -36,6 +36,9 @@ public class Signer {
     @XmlElement(name = "access_code")
     private String accessCode;
 
+    @XmlElement(name = "existing_fields")
+    private final List<ExistingField> existing_fields = new ArrayList<>();
+
     @SuppressWarnings("unused")
     private Signer() { /* JAXB requires it */ }
 

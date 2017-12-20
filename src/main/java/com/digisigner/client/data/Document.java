@@ -35,6 +35,8 @@ public class Document {
     private InputStream inputStream;
 
     @XmlElement
+    private String title;
+    @XmlElement
     private String subject;
     @XmlElement
     private String message;
@@ -68,6 +70,14 @@ public class Document {
 
     public void setId(String id) {
         this.id = id;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
     }
 
     public String getSubject() {
