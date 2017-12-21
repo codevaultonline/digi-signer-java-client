@@ -20,6 +20,9 @@ public class Field {
 
     private String name;
 
+    @XmlElement(name = "api_id")
+    private String apiId;
+
     private String content;
 
     private String label;
@@ -81,6 +84,14 @@ public class Field {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getApiId() {
+        return apiId;
+    }
+
+    public void setApiId(String apiId) {
+        this.apiId = apiId;
     }
 
     public String getContent() {
