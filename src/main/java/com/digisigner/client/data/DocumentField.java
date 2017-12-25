@@ -12,6 +12,9 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlAccessorType(XmlAccessType.FIELD)
 public class DocumentField {
 
+    @XmlElement(name = "api_id")
+    private String apiId;
+	
     private String role;
 
     private FieldType type;
@@ -49,7 +52,11 @@ public class DocumentField {
 
     private DocumentFieldAlignment alignment;
 
-    public String getRole() {
+    public String getApiId() {
+		return apiId;
+	}
+
+	public String getRole() {
         return role;
     }
 
