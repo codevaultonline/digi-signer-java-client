@@ -28,7 +28,7 @@ public class ExistingField {
     private Boolean readOnly;
 
     @SuppressWarnings("unused")
-    public ExistingField() {
+    private ExistingField() {
         /* JAXB requires it */
     }
 
@@ -38,10 +38,6 @@ public class ExistingField {
 
     public String getApiId() {
         return apiId;
-    }
-
-    public void setApiId(String apiId) {
-        this.apiId = apiId;
     }
 
     public String getContent() {
