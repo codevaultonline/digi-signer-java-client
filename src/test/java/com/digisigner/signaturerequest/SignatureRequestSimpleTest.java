@@ -49,7 +49,7 @@ public class SignatureRequestSimpleTest extends SignatureRequestTest {
         SignatureRequest signatureRequestResponse = client.sendSignatureRequest(signatureRequest);
 
         // validate signature request response
-        validateResponse(signatureRequest, signatureRequestResponse);
+        validateResponse(signatureRequest, signatureRequestResponse, true);
 
         // get and validate signature request from database
         String signatureRequestId = signatureRequestResponse.getSignatureRequestId();
@@ -78,7 +78,7 @@ public class SignatureRequestSimpleTest extends SignatureRequestTest {
         SignatureRequest signatureRequestResponse = client.sendSignatureRequest(signatureRequest);
 
         // validate signature request response
-        validateResponse(signatureRequest, signatureRequestResponse);
+        validateResponse(signatureRequest, signatureRequestResponse, true);
 
         // get and validate signature request from database
         String signatureRequestId = signatureRequestResponse.getSignatureRequestId();
@@ -126,7 +126,7 @@ public class SignatureRequestSimpleTest extends SignatureRequestTest {
         SignatureRequest signatureRequestResponse = client.sendSignatureRequest(signatureRequest);
 
         // validate signature request response
-        validateResponse(signatureRequest, signatureRequestResponse);
+        validateResponse(signatureRequest, signatureRequestResponse, true);
 
         // get and validate signature request from database
         SignatureRequest createdSignatureRequest = client.getSignatureRequest(

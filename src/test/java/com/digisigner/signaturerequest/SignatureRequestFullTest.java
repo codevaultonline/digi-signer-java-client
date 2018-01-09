@@ -53,7 +53,7 @@ public class SignatureRequestFullTest extends SignatureRequestTest {
         SignatureRequest signatureRequestResponse = client.sendSignatureRequest(signatureRequest);
 
         // validate signature request response
-        validateResponse(signatureRequest, signatureRequestResponse);
+        validateResponse(signatureRequest, signatureRequestResponse, true);
 
         // get and validate signature request from database
         String signatureRequestId = signatureRequestResponse.getSignatureRequestId();
@@ -96,7 +96,7 @@ public class SignatureRequestFullTest extends SignatureRequestTest {
 
         // add document with possible attributes
         URL url = getClass().getResource(TEST_DOCUMENT_LOCATION);
-        Document document = new Document(new File(url.getFile()), "TestSendSignatureRequest.pdf");
+        Document document = new Document(new File(url.getFile()), "TestSendSignatureRequestWithFields.pdf");
         document.setTitle(TITLE);
         document.setSubject(SUBJECT);
         document.setMessage(MESSAGE);
@@ -123,7 +123,7 @@ public class SignatureRequestFullTest extends SignatureRequestTest {
 
         // add second signer
         Signer signer2 = new Signer(SIGNER_EMAIL[1]);
-        signer1.setRole(SIGNER_ROLE[1]);
+        signer2.setRole(SIGNER_ROLE[1]);
         // add fields for second signer
         Field field3 = new Field(FIELD_PAGE[1][0], FIELD_RECTANGLE[1][0], FieldType.SIGNATURE);
         field3.setApiId(FIELD_API_ID[1][0]);
@@ -149,7 +149,7 @@ public class SignatureRequestFullTest extends SignatureRequestTest {
         SignatureRequest signatureRequestResponse = client.sendSignatureRequest(signatureRequest);
 
         // validate signature request response
-        validateResponse(signatureRequest, signatureRequestResponse);
+        validateResponse(signatureRequest, signatureRequestResponse, true);
 
         // get and validate signature request from database
         String signatureRequestId = signatureRequestResponse.getSignatureRequestId();

@@ -7,6 +7,7 @@ import static org.junit.Assert.assertTrue;
 import com.digisigner.client.data.Document;
 import com.digisigner.client.data.DocumentField;
 import com.digisigner.client.data.DocumentFields;
+import com.digisigner.client.data.ExistingField;
 import com.digisigner.client.data.Field;
 import com.digisigner.client.data.SignatureRequest;
 import com.digisigner.client.data.Signer;
@@ -28,7 +29,7 @@ public class SignatureRequestTest {
     String TITLE = "Sample title";
     String SUBJECT = "Sample subject";
     String MESSAGE = "Sample message";
-    String TEMPLATE_ID = "....";
+    String TEMPLATE_ID = "9dd939f7-65f8-4e5d-8c91-8f5bf0180b3b";
 
     // signer values
     String[] SIGNER_EMAIL = new String[]{"signer_1@example.com", "signer_2@example.com"};
@@ -57,16 +58,29 @@ public class SignatureRequestTest {
 
 	/* =================  METHODS USED IN ALL SIGNATURE REQUEST TESTS ========================= */
 
-    protected void validateResponse(SignatureRequest expected, SignatureRequest actual) {
+    /**
+     * Validate response of Signature request.
+     * @param expected signature request.
+     * @param actual signature request.
+     * @param isDocument if signature request is for template - {@code false}.
+     */
+    protected void validateResponse(SignatureRequest expected, SignatureRequest actual, boolean isDocument) {
         for (int i = 0; i < actual.getDocuments().size(); i++) {
             Document document = actual.getDocuments().get(i);
             for (int s = 0; s < document.getSigners().size(); s++) {
                 String signDocumentUrl = document.getSigners().get(s).getSignDocumentUrl();
                 assertNotNull("The sign document URL cannot be null!", signDocumentUrl);
                 // validate signDocumentUrl
-                String expectedDocumentId = expected.getDocuments().get(i).getId();
-                assertTrue("The sign document URL doesn't have correct document ID.",
-                        signDocumentUrl.contains(expectedDocumentId));
+                assertTrue("The sign document URL doesn't have required parameters.",
+                        signDocumentUrl.matches("(?=.*documentId=)(?=.*invitationId=).*$"));
+                // template has different ID for expected SignatureRequest.
+                if (isDocument) {
+                    String expectedDocumentId = expected.getDocuments().get(i).getId();
+                    assertTrue("The sign document URL doesn't have correct document ID.",
+                            signDocumentUrl.contains(expectedDocumentId));
+                }
+
+
             }
         }
     }
@@ -108,7 +122,6 @@ public class SignatureRequestTest {
 
     protected void validateDocumentFields(Document document, DocumentFields documentFields) {
 
-
         for (Signer signer : document.getSigners()) {
             for (Field field : signer.getFields()) {
                 // assert that all fields from all signers in document (document.getSigners()) can be found
@@ -123,7 +136,16 @@ public class SignatureRequestTest {
                 assertEquals("Name: not equals.", field.getName(), documentField.getName());
                 assertEquals("ReadOnly: not equals.", getBooleanValue(field.getReadOnly()), documentField.isReadOnly());
                 assertEquals("Content: not equals.", field.getContent(), documentField.getContent());
+            }
 
+            for (ExistingField field : signer.getExistingFields()) {
+                DocumentField documentField = findDocumentField(field.getApiId(), documentFields);
+                assertNotNull("Document field wasn't found.", documentField);
+                // and all their attributes are equal
+                assertEquals("Label: not equals.", field.getLabel(), documentField.getLabel());
+                assertEquals("Required: not equals.", getBooleanValue(field.getRequired()), documentField.isRequired());
+                assertEquals("ReadOnly: not equals.", getBooleanValue(field.getReadOnly()), documentField.isReadOnly());
+                assertEquals("Content: not equals.", field.getContent(), documentField.getContent());
             }
         }
     }
