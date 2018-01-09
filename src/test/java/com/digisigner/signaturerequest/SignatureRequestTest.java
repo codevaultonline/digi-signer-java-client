@@ -18,9 +18,8 @@ import com.digisigner.client.data.Signer;
 public class SignatureRequestTest {
 
     // constants
-//    String SERVER_URL = "http://localhost:8080/digisigner/api";
-    String SERVER_URL = "http://localhost:8080/online/api";
-    static final String API_KEY = "04a5fa9d-1a8c-4905-8366-26488da6ccc3";
+    String SERVER_URL = "http://localhost:8080/digisigner/api";
+    static final String API_KEY = "YOUR_API_KEY";
 
     static final String TEST_DOCUMENT_LOCATION = "/document.pdf";
     boolean SEND_EMAILS = false;  // by default we don't send emails
@@ -29,7 +28,7 @@ public class SignatureRequestTest {
     String TITLE = "Sample title";
     String SUBJECT = "Sample subject";
     String MESSAGE = "Sample message";
-    String TEMPLATE_ID = "9dd939f7-65f8-4e5d-8c91-8f5bf0180b3b";
+    String TEMPLATE_ID = "YOUR_TEMPLATE_ID";
 
     // signer values
     String[] SIGNER_EMAIL = new String[]{"signer_1@example.com", "signer_2@example.com"};
