@@ -25,14 +25,14 @@ public class SignatureRequestTest {
     boolean SEND_EMAILS = false;  // by default we don't send emails
 
     // document values
+    String TITLE = "Sample title";
     String SUBJECT = "Sample subject";
     String MESSAGE = "Sample message";
-    String TITLE = "Sample title";
     String TEMPLATE_ID = "....";
 
     // signer values
     String[] SIGNER_EMAIL = new String[]{"signer_1@example.com", "signer_2@example.com"};
-    private String[] SIGNER_ROLE = new String[]{"Signer 1", "Signer 2"};
+    String[] SIGNER_ROLE = new String[]{"Signer 1", "Signer 2"};
 
     // field values
     int[][] FIELD_PAGE = new int[][]{{0, 0}, {0, 0}};
@@ -43,17 +43,16 @@ public class SignatureRequestTest {
             // fields for second signer
             {{100, 300, 300, 400}, {400, 300, 450, 330}}};
 
-    String[][] FIELD_API_ID = new String[][]{{"Sample API ID 1", "Sample API ID 2"},
-            {"Sample API ID 3", "Sample API ID 4"}};
-
-
     String[][] FIELD_CONTENT = new String[][]{{"Sample content 1", "Sample content 2"},
             {"Sample content 3", "Sample content 4"}};
-//    String[][] FIELD_LABEL =....
-//    String[][] FIELD_API_ID =...
-//    boolean[][] FIELD_REQUIRED =...
-//    boolean[][] FIELD_READ_ONLY =...
-//    String[][] EXISTINGS_FIELD_API_ID =...
+    String[][] FIELD_LABEL = new String[][]{{"Sample label 1", "Sample label 2"},
+            {"Sample API ID 3", "Sample API ID 4"}};
+    String[][] FIELD_API_ID = new String[][]{{"Sample API ID 1", "Sample API ID 2"},
+            {"Sample API ID 3", "Sample API ID 4"}};
+    boolean[][] FIELD_REQUIRED = new boolean[][]{{true, true}, {false, true}};
+    boolean[][] FIELD_READ_ONLY = new boolean[][]{{false, false}, {false, true}};
+    String[][] EXISTINGS_FIELD_API_ID = new String[][]{{"Sample Existing API ID 1", "Sample Existing API ID 2"},
+            {"Sample Existing API ID 3", "Sample Existing API ID 4"}};
 
 
 	/* =================  METHODS USED IN ALL SIGNATURE REQUEST TESTS ========================= */
