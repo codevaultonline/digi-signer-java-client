@@ -58,6 +58,10 @@ public class Signer {
         existingFields.add(existingField);
     }
 
+    public List<Field> getFields() {
+        return fields;
+    }
+
     public String getEmail() {
         return email;
     }

@@ -11,6 +11,8 @@ import org.junit.Test;
 import com.digisigner.client.DigiSignerClient;
 import com.digisigner.client.data.Document;
 import com.digisigner.client.data.DocumentFields;
+import com.digisigner.client.data.Field;
+import com.digisigner.client.data.FieldType;
 import com.digisigner.client.data.SignatureRequest;
 import com.digisigner.client.data.Signer;
 
@@ -20,9 +22,6 @@ import com.digisigner.client.data.Signer;
  */
 public class SignatureRequestSimpleTest extends SignatureRequestTest {
 
-    private static final String DOCUMENT_ID = "a4f6850b-713d-4809-a3f5-5184495ec12e";
-    private static final String TEST_DOCUMENT_LOCATION = "/document.pdf";
-
     // API client
     private DigiSignerClient client = new DigiSignerClient(SERVER_URL, API_KEY);
 
@@ -31,8 +30,7 @@ public class SignatureRequestSimpleTest extends SignatureRequestTest {
      * Example string for curl:
      * {"send_emails": false,
      *   "documents" : [
-     *     {"document_id": "f1cd390a-70cd-4b9e-9b11-288016e9985f", "signers": [{"email": "signer_1@example.com"}]}]
-     * }
+     *     {"document_id": "f1cd390a-70cd-4b9e-9b11-288016e9985f", "signers": [{"email": "signer_1@example.com"}]}]}
      */
     @Test
     public void testSendSignatureRequestForFile() {
@@ -91,33 +89,38 @@ public class SignatureRequestSimpleTest extends SignatureRequestTest {
     }
 
 
+    /**
+     * Test to send signature request with fields.
+     * Example string for curl:
+     * {"documents" : [
+     *   {"document_id": "d083448d-ad0e-4742-af19-cfc1117445b1",
+     *    "signers": [{"email": "signer_1@example.com",
+     *         "fields": [{"page": 0, "rectangle": [100, 100, 300, 200], "type": "SIGNATURE"},
+     *                    {"page": 0, "rectangle": [350, 100, 400, 200], *"type": "TEXT"}]}]}]}
+     */
+    @Test
     public void testSendSignatureRequestWithFields() {
-
-        // send signature request
-        /*
-        {"documents" : [
-          {"document_id": "d083448d-ad0e-4742-af19-cfc1117445b1",
-           "signers": [
-            {"email": "signer_1@example.com",
-             "fields": [
-              {"page": 0,
-               "rectangle": [100, 100, 300, 200],
-               "type": "SIGNATURE"
-              },
-              {"page": 0,
-               "rectangle": [350, 100, 400, 200],
-               "type": "TEXT"
-              }
-             ]
-            }
-           ]
-          }
-        ]}
-        */
 
         // build signature request
         SignatureRequest signatureRequest = new SignatureRequest();
-//		........................
+        signatureRequest.setSendEmails(SEND_EMAILS);
+
+        // add document from file and one signer
+        URL url = getClass().getResource(TEST_DOCUMENT_LOCATION);
+        Document document = new Document(new File(url.getFile()), "TestSendSignatureRequestWithFields.pdf");
+        Signer signer = new Signer(SIGNER_EMAIL[0]);
+        // add field with API ID to be able find it latter
+        Field field1 = new Field(FIELD_PAGE[0][0], FIELD_RECTANGLE[0][0], FieldType.SIGNATURE);
+        field1.setApiId(FIELD_API_ID[0][0]);
+        signer.addField(field1);
+        // add second field to signer
+        Field field2 = new Field(FIELD_PAGE[0][1], FIELD_RECTANGLE[0][1], FieldType.TEXT);
+        field2.setApiId(FIELD_API_ID[0][1]);
+        signer.addField(field2);
+
+        document.addSigner(signer);
+
+        signatureRequest.addDocument(document);
 
         // execute signature request
         SignatureRequest signatureRequestResponse = client.sendSignatureRequest(signatureRequest);
@@ -126,12 +129,13 @@ public class SignatureRequestSimpleTest extends SignatureRequestTest {
         validateResponse(signatureRequest, signatureRequestResponse);
 
         // get and validate signature request from database
-        SignatureRequest createdSignatureRequest = client.getSignatureRequest(signatureRequest.getSignatureRequestId());
+        SignatureRequest createdSignatureRequest = client.getSignatureRequest(
+                signatureRequestResponse.getSignatureRequestId());
         validateSignatureRequest(signatureRequest, createdSignatureRequest);
 
         // get and validate fields from database
-        Document document = signatureRequest.getDocuments().get(0);
-        DocumentFields documentFields = client.getDocumentFields(document.getId());
-        validateDocumentFields(document, documentFields);
+        Document expectedDocument = signatureRequest.getDocuments().get(0);
+        DocumentFields documentFields = client.getDocumentFields(expectedDocument.getId());
+        validateDocumentFields(expectedDocument, documentFields);
     }
 }

@@ -5,7 +5,9 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
 import com.digisigner.client.data.Document;
+import com.digisigner.client.data.DocumentField;
 import com.digisigner.client.data.DocumentFields;
+import com.digisigner.client.data.Field;
 import com.digisigner.client.data.SignatureRequest;
 import com.digisigner.client.data.Signer;
 
@@ -19,6 +21,7 @@ public class SignatureRequestTest {
     String SERVER_URL = "http://localhost:8080/online/api";
     static final String API_KEY = "04a5fa9d-1a8c-4905-8366-26488da6ccc3";
 
+    static final String TEST_DOCUMENT_LOCATION = "/document.pdf";
     boolean SEND_EMAILS = false;  // by default we don't send emails
 
     // document values
@@ -32,13 +35,16 @@ public class SignatureRequestTest {
     private String[] SIGNER_ROLE = new String[]{"Signer 1", "Signer 2"};
 
     // field values
-    private int[][] FIELD_PAGE = new int[][]{{0, 0}, {0, 0}};
+    int[][] FIELD_PAGE = new int[][]{{0, 0}, {0, 0}};
 
-    private int[][][] FIELD_RECTANGLE = new int[][][]{{
+    int[][][] FIELD_RECTANGLE = new int[][][]{
             // fields for first signer
-            {100, 100, 300, 200}}, {{400, 100, 450, 130}},
+            {{100, 100, 300, 200}, {400, 100, 450, 130}},
             // fields for second signer
-            {{100, 300, 300, 400}}, {{400, 300, 450, 330}}};
+            {{100, 300, 300, 400}, {400, 300, 450, 330}}};
+
+    String[][] FIELD_API_ID = new String[][]{{"Sample API ID 1", "Sample API ID 2"},
+            {"Sample API ID 3", "Sample API ID 4"}};
 
 
     String[][] FIELD_CONTENT = new String[][]{{"Sample content 1", "Sample content 2"},
@@ -63,7 +69,6 @@ public class SignatureRequestTest {
                 assertTrue("The sign document URL doesn't have correct document ID.",
                         signDocumentUrl.contains(expectedDocumentId));
             }
-
         }
     }
 
@@ -79,7 +84,6 @@ public class SignatureRequestTest {
         assertEquals("Completed: not equals.", getBooleanValue(expected.getCompleted()), actual.getCompleted());
 
         // iterate over documents and assert all their attributes are the same
-
         for (int i = 0; i < expected.getDocuments().size(); i++) {
             Document expectedDocument = expected.getDocuments().get(i);
             Document actualDocument = expected.getDocuments().get(i);
@@ -90,7 +94,6 @@ public class SignatureRequestTest {
             assertEquals("Document Message: not equals.", expectedDocument.getMessage(), actualDocument.getMessage());
 
             // for each document iterate over signers and assert all their attributes are the same
-
             for (int s = 0; s < expectedDocument.getSigners().size(); s++) {
                 Signer expectedSigner = expectedDocument.getSigners().get(s);
                 Signer actualSigner = expectedDocument.getSigners().get(s);
@@ -104,13 +107,39 @@ public class SignatureRequestTest {
         }
     }
 
+    protected void validateDocumentFields(Document document, DocumentFields documentFields) {
+
+
+        for (Signer signer : document.getSigners()) {
+            for (Field field : signer.getFields()) {
+                // assert that all fields from all signers in document (document.getSigners()) can be found
+                // in documentFields.getDocumentFields()
+                DocumentField documentField = findDocumentField(field.getApiId(), documentFields);
+                assertNotNull("Document field wasn't found.", documentField);
+                // and all their attributes are equal
+                assertEquals("Page: not equals.", field.getPage(), documentField.getPage());
+                assertEquals("Type: not equals.", field.getType(), documentField.getType());
+                assertEquals("Label: not equals.", field.getLabel(), documentField.getLabel());
+                assertEquals("Required: not equals.", field.isRequired(), documentField.isRequired());
+                assertEquals("Name: not equals.", field.getName(), documentField.getName());
+                assertEquals("ReadOnly: not equals.", getBooleanValue(field.getReadOnly()), documentField.isReadOnly());
+                assertEquals("Content: not equals.", field.getContent(), documentField.getContent());
+
+            }
+        }
+    }
+
     private boolean getBooleanValue(Boolean value) {
         return value != null && value;
     }
 
-    protected void validateDocumentFields(Document document, DocumentFields documentFields) {
-        // assert that all fields from all signers in document (document.getSigners()) can be found in documentFields.getDocumentFields()
-        // and all their attributes are equal
+    private DocumentField findDocumentField(String apiId, DocumentFields documentFields) {
+        for (DocumentField documentField : documentFields.getDocumentFields()) {
+            if (documentField.getApiId().equals(apiId)) {
+                return documentField;
+            }
+        }
+        return null;
     }
 }
 
