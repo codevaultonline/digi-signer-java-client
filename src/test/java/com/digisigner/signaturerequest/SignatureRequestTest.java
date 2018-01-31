@@ -61,8 +61,9 @@ public class SignatureRequestTest {
 
     /**
      * Validate response of Signature request.
-     * @param expected signature request.
-     * @param actual signature request.
+     *
+     * @param expected   signature request.
+     * @param actual     signature request.
      * @param isDocument if signature request is for template - {@code false}.
      */
     protected void validateResponse(SignatureRequest expected, SignatureRequest actual, boolean isDocument) {
@@ -84,7 +85,14 @@ public class SignatureRequestTest {
         }
     }
 
-    protected void validateSignatureRequest(SignatureRequest expected, SignatureRequest actual) {
+    /**
+     * Validate signature request..
+     *
+     * @param expected   signature request.
+     * @param actual     signature request.
+     * @param isDocument if signature request is for template - {@code false}.
+     */
+    protected void validateSignatureRequest(SignatureRequest expected, SignatureRequest actual, boolean isDocument) {
 
         // assert all high level attributes are the same: "send_emails", "embedded" etc.
         assertEquals("SendEmails: not equals.", expected.getSendEmails(), actual.getSendEmails());
@@ -99,11 +107,29 @@ public class SignatureRequestTest {
         for (int i = 0; i < expected.getDocuments().size(); i++) {
             Document expectedDocument = expected.getDocuments().get(i);
             Document actualDocument = actual.getDocuments().get(i);
-//            assertEquals("DocumentId: not equals.", expectedDocument.getId(), actualDocument.getId());
-//            assertEquals("Document Title: not equals.", expectedDocument.getTitle(), actualDocument.getTitle());
-//            assertEquals("Document FileName: not equals.", expectedDocument.getFileName(), actualDocument.getFileName());
-//            assertEquals("Document Subject: not equals.", expectedDocument.getSubject(), actualDocument.getSubject());
-//            assertEquals("Document Message: not equals.", expectedDocument.getMessage(), actualDocument.getMessage());
+            // template has different ID for expected SignatureRequest.
+            if (isDocument) {
+                assertEquals("DocumentId: not equals.", expectedDocument.getId(), actualDocument.getId());
+            }
+            // check document title; if not set - generated
+            if (expectedDocument.getTitle() == null) {
+                assertNotNull("Default title was not set.", actualDocument.getTitle());
+            } else {
+                assertEquals("Document Title: not equals.", expectedDocument.getTitle(), actualDocument.getTitle());
+            }
+
+            // check document subject and message; if not set - taken by default
+            if (expectedDocument.getSubject() == null) {
+                assertNotNull("Default subject was not set.", actualDocument.getSubject());
+            } else {
+                assertEquals("Document Subject: not equals.", expectedDocument.getSubject(), actualDocument.getSubject());
+            }
+
+            if (expectedDocument.getMessage() == null) {
+                assertNotNull("Default message was not set.", actualDocument.getSubject());
+            } else {
+                assertEquals("Document Message: not equals.", expectedDocument.getMessage(), actualDocument.getMessage());
+            }
 
             // for each document iterate over signers and assert all their attributes are the same
             for (int s = 0; s < expectedDocument.getSigners().size(); s++) {
@@ -112,12 +138,20 @@ public class SignatureRequestTest {
 
                 assertEquals("AccessCode: not equals.", expectedSigner.getAccessCode(), actualSigner.getAccessCode());
                 assertEquals("Email: not equals.", expectedSigner.getEmail(), actualSigner.getEmail());
-//                assertEquals("Role: not equals.", expectedSigner.getRole(), actualSigner.getRole());
-//                assertEquals("SignDocumentUrl: not equals.", expectedSigner.getSignDocumentUrl(), actualSigner.getSignDocumentUrl());
+                assertEquals("Signer order: not equals.", expectedSigner.getOrder(), actualSigner.getOrder());
+                // validate if role defined for signer
+                if (expectedSigner.getRole() != null) {
+                    assertEquals("Role: not equals.", expectedSigner.getRole(), actualSigner.getRole());
+                }
+                // validate signDocumentUrl
+                assertNotNull("The sign document URL cannot be null!", actualSigner.getSignDocumentUrl());
+                assertTrue("The sign document URL doesn't have required parameters.",
+                        actualSigner.getSignDocumentUrl().matches("(?=.*documentId=)(?=.*invitationId=).*$"));
                 assertEquals("SignatureCompleted: not equals.", getBooleanValue(expectedSigner.getSignatureCompleted()), actualSigner.getSignatureCompleted());
             }
         }
     }
+
 
     protected void validateDocumentFields(Document document, DocumentFields documentFields) {
 

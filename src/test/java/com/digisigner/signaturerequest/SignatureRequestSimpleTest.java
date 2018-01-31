@@ -55,7 +55,7 @@ public class SignatureRequestSimpleTest extends SignatureRequestTest {
         String signatureRequestId = signatureRequestResponse.getSignatureRequestId();
         SignatureRequest createdSignatureRequest = client.getSignatureRequest(signatureRequestId);
 
-        validateSignatureRequest(signatureRequest, createdSignatureRequest);
+        validateSignatureRequest(signatureRequest, createdSignatureRequest, true);
     }
 
     /**
@@ -84,7 +84,7 @@ public class SignatureRequestSimpleTest extends SignatureRequestTest {
         String signatureRequestId = signatureRequestResponse.getSignatureRequestId();
         SignatureRequest createdSignatureRequest = client.getSignatureRequest(signatureRequestId);
 
-        validateSignatureRequest(signatureRequest, createdSignatureRequest);
+        validateSignatureRequest(signatureRequest, createdSignatureRequest, true);
 
     }
 
@@ -131,7 +131,7 @@ public class SignatureRequestSimpleTest extends SignatureRequestTest {
         // get and validate signature request from database
         SignatureRequest createdSignatureRequest = client.getSignatureRequest(
                 signatureRequestResponse.getSignatureRequestId());
-        validateSignatureRequest(signatureRequest, createdSignatureRequest);
+        validateSignatureRequest(signatureRequest, createdSignatureRequest, true);
 
         // get and validate fields from database
         Document expectedDocument = signatureRequest.getDocuments().get(0);

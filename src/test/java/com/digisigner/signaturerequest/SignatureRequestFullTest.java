@@ -60,7 +60,7 @@ public class SignatureRequestFullTest extends SignatureRequestTest {
         SignatureRequest createdSignatureRequest = client.getSignatureRequest(signatureRequestId);
 
         assertTrue("Wrong number of signers", createdSignatureRequest.getDocuments().get(0).getSigners().size() == 2);
-        validateSignatureRequest(signatureRequest, createdSignatureRequest);
+        validateSignatureRequest(signatureRequest, createdSignatureRequest, true);
     }
 
     /**
@@ -156,7 +156,7 @@ public class SignatureRequestFullTest extends SignatureRequestTest {
         SignatureRequest createdSignatureRequest = client.getSignatureRequest(signatureRequestId);
 
         assertTrue("Wrong number of signers", createdSignatureRequest.getDocuments().get(0).getSigners().size() == 2);
-        validateSignatureRequest(signatureRequest, createdSignatureRequest);
+        validateSignatureRequest(signatureRequest, createdSignatureRequest, true);
 
         // get and validate fields from database
         Document expectedDocument = signatureRequest.getDocuments().get(0);
