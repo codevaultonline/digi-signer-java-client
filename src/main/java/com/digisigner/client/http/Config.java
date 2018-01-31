@@ -33,4 +33,8 @@ public final class Config {
     public static String getSignatureRequestsUrl(String server) {
         return server + VERSION + SIGNATURE_REQUESTS_URL;
     }
+
+    public static String getDeleteDocumentUrl(String server, String documentId) {
+        return getDocumentUrl(server) + "/" + documentId;
+    }
 }

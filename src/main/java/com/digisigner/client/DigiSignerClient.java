@@ -12,6 +12,7 @@ import com.digisigner.client.data.Signature;
 import com.digisigner.client.data.SignatureRequest;
 import com.digisigner.client.http.ClientResponse;
 import com.digisigner.client.http.Config;
+import com.digisigner.client.http.DeleteRequest;
 import com.digisigner.client.http.GetRequest;
 import com.digisigner.client.http.PostRequest;
 
@@ -117,5 +118,14 @@ public class DigiSignerClient {
 
         String url = Config.getContentUrl(serverUrl, documentId);
         new PostRequest(apiKey).postAsJson(Object.class, new DocumentContent(signatures), url);
+    }
+
+    /**
+     * Deletes document by document ID.
+     */
+    public void deleteDocument(String documentId) {
+
+        String url = Config.getDeleteDocumentUrl(serverUrl, documentId);
+        new DeleteRequest(apiKey).delete(Object.class, url);
     }
 }

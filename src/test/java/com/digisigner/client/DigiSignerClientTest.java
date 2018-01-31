@@ -28,25 +28,25 @@ import com.digisigner.client.data.Signer;
  */
 public class DigiSignerClientTest {
 
+    private String SERVER_URL = TestsConfigUtil.getServerUrl();
     /**
      * The api key for test.
      * The value can be found in the DigiSigner account (Settings dialog).
      */
-    private static final String API_KEY = "YOUR_API_KEY";
+    private static final String API_KEY = TestsConfigUtil.getApiKey();
 
     private static final String TEST_SIGNER_EMAIL = "asdf.asdf@list.ru";
 
     private static final String MESSAGE = "Message: ";
 
+    // API client
+    private final DigiSignerClient client = new DigiSignerClient(SERVER_URL, API_KEY);
+
     @Test
     public void testSendRequest() throws FileNotFoundException {
 
-        // API client
-        DigiSignerClient client = new DigiSignerClient(API_KEY);
-
         // signature request
         SignatureRequest signatureRequest = new SignatureRequest();
-
 
         try {
             // add document
@@ -71,9 +71,6 @@ public class DigiSignerClientTest {
 
     @Test
     public void testGetSignatureRequest() throws FileNotFoundException {
-
-        // API client
-        DigiSignerClient client = new DigiSignerClient(API_KEY);
 
         // signature request to send
         SignatureRequest signatureRequestToSend = new SignatureRequest();
@@ -117,8 +114,6 @@ public class DigiSignerClientTest {
 
     @Test
     public void testUploadDocument() throws FileNotFoundException {
-        // API client
-        DigiSignerClient client = new DigiSignerClient(API_KEY);
 
         // add document
         Document document = buildDocumentFromFile();
@@ -133,8 +128,6 @@ public class DigiSignerClientTest {
 
     @Test
     public void testUploadAndGetDocument() throws FileNotFoundException {
-        // API client
-        DigiSignerClient client = new DigiSignerClient(API_KEY);
 
         // add document
         Document document = buildDocumentFromFile();
@@ -213,9 +206,6 @@ public class DigiSignerClientTest {
     @Test
     public void testAddContentToDocument() throws FileNotFoundException {
 
-        // API client
-        DigiSignerClient client = new DigiSignerClient(API_KEY);
-
         try {
             // upload document
             URL url = getClass().getResource("/document.pdf");
@@ -250,9 +240,6 @@ public class DigiSignerClientTest {
 
     @Test
     public void testGetDocumentFields() throws FileNotFoundException {
-
-        // API client
-        DigiSignerClient client = new DigiSignerClient(API_KEY);
 
         // signature request to send
         SignatureRequest signatureRequestToSend = new SignatureRequest();

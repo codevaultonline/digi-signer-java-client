@@ -4,6 +4,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
+import com.digisigner.client.TestsConfigUtil;
 import com.digisigner.client.data.Document;
 import com.digisigner.client.data.DocumentField;
 import com.digisigner.client.data.DocumentFields;
@@ -18,8 +19,8 @@ import com.digisigner.client.data.Signer;
 public class SignatureRequestTest {
 
     // constants
-    String SERVER_URL = "http://localhost:8080/digisigner/api";
-    static final String API_KEY = "YOUR_API_KEY";
+    String SERVER_URL = TestsConfigUtil.getServerUrl();
+    static final String API_KEY = TestsConfigUtil.getApiKey();
 
     static final String TEST_DOCUMENT_LOCATION = "/document.pdf";
     boolean SEND_EMAILS = false;  // by default we don't send emails
@@ -28,7 +29,7 @@ public class SignatureRequestTest {
     String TITLE = "Sample title";
     String SUBJECT = "Sample subject";
     String MESSAGE = "Sample message";
-    String TEMPLATE_ID = "YOUR_TEMPLATE_ID";
+    String TEMPLATE_ID = TestsConfigUtil.getTemplateId();
 
     // signer values
     String[] SIGNER_EMAIL = new String[]{"signer_1@example.com", "signer_2@example.com"};
@@ -78,8 +79,6 @@ public class SignatureRequestTest {
                     assertTrue("The sign document URL doesn't have correct document ID.",
                             signDocumentUrl.contains(expectedDocumentId));
                 }
-
-
             }
         }
     }
