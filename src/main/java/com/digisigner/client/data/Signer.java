@@ -18,6 +18,8 @@ public class Signer {
     private String email;
 
     private String role;
+    
+    private Integer order;
 
     private final List<Field> fields = new ArrayList<>();
 
@@ -46,7 +48,23 @@ public class Signer {
         this.email = email;
     }
 
-    public void addField(Field field) {
+    public void setRole(String role) {
+        this.role = role;
+    }
+
+    public String getRole() {
+        return role;
+    }
+
+    public Integer getOrder() {
+		return order;
+	}
+
+	public void setOrder(Integer order) {
+		this.order = order;
+	}
+
+	public void addField(Field field) {
         fields.add(field);
     }
 
@@ -76,14 +94,6 @@ public class Signer {
 
     public void setUseAllPdfFields(boolean useAllPdfFields) {
         this.useAllPdfFields = useAllPdfFields;
-    }
-
-    public void setRole(String role) {
-        this.role = role;
-    }
-
-    public String getRole() {
-        return role;
     }
 
     public Boolean getSignatureCompleted() {
