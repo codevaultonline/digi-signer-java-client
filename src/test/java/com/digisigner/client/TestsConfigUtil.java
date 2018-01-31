@@ -9,9 +9,15 @@ import java.util.Properties;
 /**
  * Reads properties from {user.dir}/digisigner.test.properties file.
  * File structure:
+ * 
  * server.url=http://localhost:8080/online/api
  * api.key=YOUR_API_KEY
  * template.id=YOUR_TEMPLATE_ID
+ *
+ * existing.field.api.id.0=Sample Existing API ID 1
+ * existing.field.api.id.1=Sample Existing API ID 2
+ * existing.field.api.id.2=Sample Existing API ID 3
+ * existing.field.api.id.3=Sample Existing API ID 4
  */
 public final class TestsConfigUtil {
 
@@ -24,6 +30,7 @@ public final class TestsConfigUtil {
     private static final String SERVER_URL = "server.url";
     private static final String API_KEY = "api.key";
     private static final String TEMPLATE_ID = "template.id";
+    public static final String EXISTING_FIELD_API_ID = "existing.field.api.id.";
 
     static {
         String dir = System.getProperty(USER_DIR);
@@ -52,5 +59,9 @@ public final class TestsConfigUtil {
 
     public static String getTemplateId() {
         return prop.getProperty(TEMPLATE_ID);
+    }
+
+    public static String getExisnigField(int index) {
+        return prop.getProperty(EXISTING_FIELD_API_ID + index);
     }
 }
