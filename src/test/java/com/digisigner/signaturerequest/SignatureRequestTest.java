@@ -53,8 +53,8 @@ public class SignatureRequestTest {
     boolean[][] FIELD_REQUIRED = new boolean[][]{{true, true}, {false, true}};
     boolean[][] FIELD_READ_ONLY = new boolean[][]{{false, false}, {false, true}};
     String[][] EXISTINGS_FIELD_API_ID = new String[][]{
-            {TestsConfigUtil.getExisnigField(0), TestsConfigUtil.getExisnigField(1)},
-            {TestsConfigUtil.getExisnigField(2), TestsConfigUtil.getExisnigField(3)}};
+            {TestsConfigUtil.getExistingField(0), TestsConfigUtil.getExistingField(1)},
+            {TestsConfigUtil.getExistingField(2), TestsConfigUtil.getExistingField(3)}};
 
 
 	/* =================  METHODS USED IN ALL SIGNATURE REQUEST TESTS ========================= */

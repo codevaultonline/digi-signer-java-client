@@ -9,7 +9,7 @@ import java.util.Properties;
 /**
  * Reads properties from {user.dir}/digisigner.test.properties file.
  * File structure:
- * 
+ *
  * server.url=http://localhost:8080/online/api
  * api.key=YOUR_API_KEY
  * template.id=YOUR_TEMPLATE_ID
@@ -61,7 +61,7 @@ public final class TestsConfigUtil {
         return prop.getProperty(TEMPLATE_ID);
     }
 
-    public static String getExisnigField(int index) {
+    public static String getExistingField(int index) {
         return prop.getProperty(EXISTING_FIELD_API_ID + index);
     }
 }
