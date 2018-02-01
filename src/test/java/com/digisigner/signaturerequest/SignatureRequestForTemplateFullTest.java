@@ -35,9 +35,16 @@ public class SignatureRequestForTemplateFullTest extends SignatureRequestTest {
         document.setTitle(TITLE);
         document.setSubject(SUBJECT);
         document.setMessage(MESSAGE);
+        
+        Signer signer1 = new Signer(SIGNER_EMAIL[0]);
+        signer1.setOrder(SIGNER_ORDER[0]);
+        
+        Signer signer2 = new Signer(SIGNER_EMAIL[1]);
+        signer2.setOrder(SIGNER_ORDER[1]);
+		
+        document.addSigner(signer1);
+        document.addSigner(signer2);
         signatureRequest.addDocument(document);
-        document.addSigner(new Signer(SIGNER_EMAIL[0]));
-        document.addSigner(new Signer(SIGNER_EMAIL[1]));
 
         // execute signature request
         SignatureRequest signatureRequestResponse = client.sendSignatureRequest(signatureRequest);
@@ -84,11 +91,11 @@ public class SignatureRequestForTemplateFullTest extends SignatureRequestTest {
         document.setSubject(SUBJECT);
         document.setMessage(MESSAGE);
 
+        // add first signer
         Signer signer1 = new Signer(SIGNER_EMAIL[0]);
         signer1.setRole(SIGNER_ROLE[0]);
-        Signer signer2 = new Signer(SIGNER_EMAIL[1]);
-        signer2.setRole(SIGNER_ROLE[1]);
-
+        signer1.setOrder(SIGNER_ORDER[0]);
+        
         // add field for first signer
         ExistingField field1 = new ExistingField(EXISTINGS_FIELD_API_ID[0][0]);
         field1.setContent(FIELD_CONTENT[0][0]);
@@ -104,6 +111,11 @@ public class SignatureRequestForTemplateFullTest extends SignatureRequestTest {
         field2.setRequired(FIELD_REQUIRED[0][1]);
         field2.setReadOnly(FIELD_READ_ONLY[0][1]);
         signer1.addExistingField(field2);
+
+        // add second signer
+        Signer signer2 = new Signer(SIGNER_EMAIL[1]);
+        signer2.setRole(SIGNER_ROLE[1]);
+        signer2.setOrder(SIGNER_ORDER[1]);
 
         // add field for second signer
         ExistingField field3 = new ExistingField(EXISTINGS_FIELD_API_ID[1][0]);

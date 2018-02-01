@@ -45,8 +45,15 @@ public class SignatureRequestFullTest extends SignatureRequestTest {
         document.setTitle(TITLE);
         document.setSubject(SUBJECT);
         document.setMessage(MESSAGE);
-        document.addSigner(new Signer(SIGNER_EMAIL[0]));
-        document.addSigner(new Signer(SIGNER_EMAIL[1]));
+        
+        Signer signer1 = new Signer(SIGNER_EMAIL[0]);
+        signer1.setOrder(SIGNER_ORDER[0]);
+        
+        Signer signer2 = new Signer(SIGNER_EMAIL[1]);
+        signer2.setOrder(SIGNER_ORDER[1]);
+		
+        document.addSigner(signer1);
+        document.addSigner(signer2);
         signatureRequest.addDocument(document);
 
         // execute signature request
@@ -104,6 +111,7 @@ public class SignatureRequestFullTest extends SignatureRequestTest {
         // add first signer
         Signer signer1 = new Signer(SIGNER_EMAIL[0]);
         signer1.setRole(SIGNER_ROLE[0]);
+        signer1.setOrder(SIGNER_ORDER[0]);
         // add fields for first signer
         Field field1 = new Field(FIELD_PAGE[0][0], FIELD_RECTANGLE[0][0], FieldType.SIGNATURE);
         field1.setApiId(FIELD_API_ID[0][0]);
@@ -124,6 +132,7 @@ public class SignatureRequestFullTest extends SignatureRequestTest {
         // add second signer
         Signer signer2 = new Signer(SIGNER_EMAIL[1]);
         signer2.setRole(SIGNER_ROLE[1]);
+        signer2.setOrder(SIGNER_ORDER[1]);
         // add fields for second signer
         Field field3 = new Field(FIELD_PAGE[1][0], FIELD_RECTANGLE[1][0], FieldType.SIGNATURE);
         field3.setApiId(FIELD_API_ID[1][0]);

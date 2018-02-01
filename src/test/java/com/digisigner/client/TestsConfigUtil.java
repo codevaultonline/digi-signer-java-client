@@ -23,7 +23,7 @@ public final class TestsConfigUtil {
 
     private static final Properties prop = new Properties();
     // file location
-    private static final String USER_DIR = "user.dir";
+    private static final String USER_DIR = "user.home";
     private static final String DIGISIGNER_TEST_PROPERTIES = "/digisigner.test.properties";
 
     // property keys

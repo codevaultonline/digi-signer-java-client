@@ -34,6 +34,7 @@ public class SignatureRequestTest {
     // signer values
     String[] SIGNER_EMAIL = new String[]{"signer_1@example.com", "signer_2@example.com"};
     String[] SIGNER_ROLE = new String[]{"Signer 1", "Signer 2"};
+    Integer[] SIGNER_ORDER = new Integer[]{1, 2};
 
     // field values
     int[][] FIELD_PAGE = new int[][]{{0, 0}, {0, 0}};
