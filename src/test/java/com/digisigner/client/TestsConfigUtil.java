@@ -30,7 +30,7 @@ public final class TestsConfigUtil {
     private static final String SERVER_URL = "server.url";
     private static final String API_KEY = "api.key";
     private static final String TEMPLATE_ID = "template.id";
-    public static final String EXISTING_FIELD_API_ID = "existing.field.api.id.";
+    private static final String EXISTING_FIELD_API_ID = "existing.field.api.id.";
 
     static {
         String dir = System.getProperty(USER_DIR);
