@@ -7,7 +7,7 @@ import java.io.InputStream;
 import java.util.Properties;
 
 /**
- * Reads properties from {user.dir}/digisigner.test.properties file.
+ * Reads properties from {user.home}/digisigner.test.properties file.
  * File structure:
  *
  * server.url=http://localhost:8080/online/api
