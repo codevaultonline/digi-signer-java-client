@@ -1,5 +1,6 @@
 package com.digisigner.client;
 
+import java.io.File;
 import java.io.FileNotFoundException;
 
 import org.junit.Test;
@@ -21,14 +22,15 @@ public class GetDocumentAttachmentsTest {
     // API client
     private final DigiSignerClient client = new DigiSignerClient(SERVER_URL, API_KEY);
 
-//    @Test
+    @Test
     public void testAddContentToDocument() {
 
         try {
             String documentId = TestsConfigUtil.getAttachmentDocumentId();
             String fieldApiId = TestsConfigUtil.getAttachmentFieldId();
 
-            client.getDocumentAttachment(documentId, fieldApiId);
+            File file = client.getDocumentAttachment(documentId, fieldApiId);
+            System.out.println("File attachments location: " + file.getAbsolutePath());
 
         } catch (DigiSignerException e) { // in case http code is wrong
             System.err.println(MESSAGE + e.getMessage());

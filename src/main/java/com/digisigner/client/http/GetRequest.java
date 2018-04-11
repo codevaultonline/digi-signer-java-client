@@ -83,7 +83,7 @@ public class GetRequest extends BaseRequest {
         String raw = connection.getHeaderField(CONTENT_DISPOSITION);
         // raw = "attachment; filename=Document.pdf"
         if (raw != null && raw.indexOf("=") != -1) {
-            return raw.split("=")[1]; //getting value after '='
+            return raw.split("=")[1].replace("\"", ""); //getting value after '='
         }
         return DEFAULT_FILE_NAME;
     }
