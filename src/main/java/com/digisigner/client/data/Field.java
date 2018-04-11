@@ -18,7 +18,8 @@ public class Field {
 
     private FieldType type;
 
-    private String name;
+    @XmlElement(name = "group_id")
+    private String groupId;
 
     @XmlElement(name = "api_id")
     private String apiId;
@@ -78,12 +79,12 @@ public class Field {
         this.required = required;
     }
 
-    public String getName() {
-        return name;
+    public String getGroupId() {
+        return groupId;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setGroupId(String groupId) {
+        this.groupId = groupId;
     }
 
     public String getApiId() {

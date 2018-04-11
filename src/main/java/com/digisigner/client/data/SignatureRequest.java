@@ -44,6 +44,18 @@ public class SignatureRequest {
     @XmlElement(name = "hide_text_tags")
     private boolean hideTextTags = false;
 
+    @XmlElement(name = "send_documents_as_bundle")
+    private boolean sendDocumentsAsBundle = false;
+
+    @XmlElement(name = "bundle_title")
+    private String bundleTitle;
+
+    @XmlElement(name = "bundle_subject")
+    private String bundleSubject;
+
+    @XmlElement(name = "bundle_message")
+    private String bundleMessage;
+
     @XmlElement(name = "is_completed")
     private Boolean completed;
 
@@ -108,6 +120,38 @@ public class SignatureRequest {
 
     public void setHideTextTags(boolean hideTextTags) {
         this.hideTextTags = hideTextTags;
+    }
+
+    public boolean isSendDocumentsAsBundle() {
+        return sendDocumentsAsBundle;
+    }
+
+    public void setSendDocumentsAsBundle(boolean sendDocumentsAsBundle) {
+        this.sendDocumentsAsBundle = sendDocumentsAsBundle;
+    }
+
+    public String getBundleTitle() {
+        return bundleTitle;
+    }
+
+    public void setBundleTitle(String bundleTitle) {
+        this.bundleTitle = bundleTitle;
+    }
+
+    public String getBundleSubject() {
+        return bundleSubject;
+    }
+
+    public void setBundleSubject(String bundleSubject) {
+        this.bundleSubject = bundleSubject;
+    }
+
+    public String getBundleMessage() {
+        return bundleMessage;
+    }
+
+    public void setBundleMessage(String bundleMessage) {
+        this.bundleMessage = bundleMessage;
     }
 
     public Boolean getCompleted() {

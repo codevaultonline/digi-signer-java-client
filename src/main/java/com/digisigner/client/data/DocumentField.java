@@ -36,6 +36,9 @@ public class DocumentField {
 
     private String name;
 
+    @XmlElement(name = "group_id")
+    private String groupId;
+
     private Integer index;  // relevant only for check boxes
 
     @XmlElement(name = "read_only")
@@ -94,6 +97,10 @@ public class DocumentField {
 
     public String getName() {
         return name;
+    }
+
+    public String getGroupId() {
+        return groupId;
     }
 
     public Integer getIndex() {

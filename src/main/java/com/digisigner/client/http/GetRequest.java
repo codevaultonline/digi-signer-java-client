@@ -25,6 +25,9 @@ public class GetRequest extends BaseRequest {
     private static final Logger log = Logger.getLogger(GetRequest.class);
     private static final String POINT = ".";
 
+    private static final String CONTENT_DISPOSITION = "Content-Disposition";
+    private static final String DEFAULT_FILE_NAME = "DEFAULT_FILE_NAME";
+
     public GetRequest(String apiKey) {
         super(apiKey);
     }
@@ -42,17 +45,18 @@ public class GetRequest extends BaseRequest {
 
     // ############################ GET FILE RESPONSE ################################
 
-    public File getFileResponse(String url, String documentId, String filename) {
+    public File getFileResponse(String url, String fileName) {
         InputStream inputStream = null;
         int code;
         String responseStr;
 
-        HttpURLConnection connection = get(url + "/" + documentId);
+        HttpURLConnection connection = get(url);
         try {
             code = connection.getResponseCode();
 
             if (code == HttpURLConnection.HTTP_OK) {
-                File file = createTemporaryFile(filename);
+                String name = fileName == null ? getFileName(connection) : fileName;
+                File file = createTemporaryFile(name);
                 Files.copy(connection.getInputStream(), file.toPath(), StandardCopyOption.REPLACE_EXISTING);
                 return file;
             }
@@ -73,6 +77,15 @@ public class GetRequest extends BaseRequest {
         // if errors occur
         throwDigisignerException(responseStr, code);
         return null;
+    }
+
+    private String getFileName(HttpURLConnection connection) {
+        String raw = connection.getHeaderField(CONTENT_DISPOSITION);
+        // raw = "attachment; filename=Document.pdf"
+        if (raw != null && raw.indexOf("=") != -1) {
+            return raw.split("=")[1]; //getting value after '='
+        }
+        return DEFAULT_FILE_NAME;
     }
 
     private File createTemporaryFile(String filename) {

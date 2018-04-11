@@ -12,22 +12,28 @@ public final class Config {
     private static final String SIGNATURE_REQUESTS_URL = "/signature_requests";
     private static final String FIELDS_URL = "/fields";
     private static final String CONTENT_URL = "/content";
+    private static final String ATTACHMENT_URL = "/attachment";
+    private static final String SLASH = "/";
 
     public static final String PARAM_DOC_ID = "document_id";
 
     private Config() {
     }
 
-    public static String getDocumentUrl(String server) {
+    public static String getDocumentsUrl(String server) {
         return server + VERSION + DOCUMENTS_URL;
     }
 
+    public static String getDocumentUrl(String server, String documentId) {
+        return server + VERSION + DOCUMENTS_URL + SLASH + documentId;
+    }
+
     public static String getFieldsUrl(String server, String documentId) {
-        return getDocumentUrl(server) + "/" + documentId + FIELDS_URL;
+        return getDocumentsUrl(server) + SLASH + documentId + FIELDS_URL;
     }
 
     public static String getContentUrl(String server, String documentId) {
-        return getDocumentUrl(server) + "/" + documentId + CONTENT_URL;
+        return getDocumentsUrl(server) + SLASH + documentId + CONTENT_URL;
     }
 
     public static String getSignatureRequestsUrl(String server) {
@@ -35,6 +41,10 @@ public final class Config {
     }
 
     public static String getDeleteDocumentUrl(String server, String documentId) {
-        return getDocumentUrl(server) + "/" + documentId;
+        return getDocumentsUrl(server) + SLASH + documentId;
+    }
+
+    public static String getDocumentAttachmentUrl(String server, String documentId, String fieldApiId) {
+        return getDocumentsUrl(server) + SLASH + documentId + FIELDS_URL + SLASH + fieldApiId + ATTACHMENT_URL ;
     }
 }

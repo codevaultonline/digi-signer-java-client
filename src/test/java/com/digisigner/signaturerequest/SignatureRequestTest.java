@@ -65,7 +65,7 @@ public class SignatureRequestTest {
      *
      * @param expected   signature request.
      * @param actual     signature request.
-     * @param isDocument if signature request is for template - {@code false}.
+     * @param isDocument if signature request is for template or is a bundle - {@code false}.
      */
     protected void validateResponse(SignatureRequest expected, SignatureRequest actual, boolean isDocument) {
         for (int i = 0; i < actual.getDocuments().size(); i++) {
@@ -167,7 +167,7 @@ public class SignatureRequestTest {
                 assertEquals("Type: not equals.", field.getType(), documentField.getType());
                 assertEquals("Label: not equals.", field.getLabel(), documentField.getLabel());
                 assertEquals("Required: not equals.", field.isRequired(), documentField.isRequired());
-                assertEquals("Name: not equals.", field.getName(), documentField.getName());
+                assertEquals("GroupId: not equals.", field.getGroupId(), documentField.getGroupId());
                 assertEquals("ReadOnly: not equals.", getBooleanValue(field.getReadOnly()), documentField.isReadOnly());
                 assertEquals("Content: not equals.", field.getContent(), documentField.getContent());
             }

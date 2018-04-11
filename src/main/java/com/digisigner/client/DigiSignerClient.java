@@ -79,7 +79,7 @@ public class DigiSignerClient {
      * @return ID of uploaded document.
      */
     private String callUploadDocument(Document document) {
-        ClientResponse clientResponse = new PostRequest(apiKey).sendDocumentToServer(Config.getDocumentUrl(serverUrl),
+        ClientResponse clientResponse = new PostRequest(apiKey).sendDocumentToServer(Config.getDocumentsUrl(serverUrl),
                 document);
         return new JSONObject(clientResponse.getContent()).getString(Config.PARAM_DOC_ID);
     }
@@ -92,7 +92,7 @@ public class DigiSignerClient {
      * @return retrieved document.
      */
     public Document getDocumentById(String documentId, String fileName) {
-        File file = new GetRequest(apiKey).getFileResponse(Config.getDocumentUrl(serverUrl), documentId, fileName);
+        File file = new GetRequest(apiKey).getFileResponse(Config.getDocumentUrl(serverUrl, documentId), fileName);
 
         Document document = new Document(file);
         document.setId(documentId);
@@ -127,5 +127,18 @@ public class DigiSignerClient {
 
         String url = Config.getDeleteDocumentUrl(serverUrl, documentId);
         new DeleteRequest(apiKey).delete(Object.class, url);
+    }
+
+
+    /**
+     * Downloads a file for given document and attachment field by IDs.
+     *
+     * @param documentId ID of document.
+     * @param fieldApiId ID of field containing attachment.
+     * @return retrieved document.
+     */
+    public File getDocumentAttachment(String documentId, String fieldApiId) {
+        String fileAttachmentUrl = Config.getDocumentAttachmentUrl(serverUrl, documentId, fieldApiId);
+        return new GetRequest(apiKey).getFileResponse(fileAttachmentUrl, null);
     }
 }

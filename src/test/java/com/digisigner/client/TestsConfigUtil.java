@@ -18,6 +18,9 @@ import java.util.Properties;
  * existing.field.api.id.1=Sample Existing API ID 2
  * existing.field.api.id.2=Sample Existing API ID 3
  * existing.field.api.id.3=Sample Existing API ID 4
+ *
+ * attachment.document.api.id=YOUR_DOCUMENT_ID_WITH_ATTACHMENT_FIELD
+ * attachment.field.api.id=Sample Attachment API ID
  */
 public final class TestsConfigUtil {
 
@@ -31,6 +34,8 @@ public final class TestsConfigUtil {
     private static final String API_KEY = "api.key";
     private static final String TEMPLATE_ID = "template.id";
     private static final String EXISTING_FIELD_API_ID = "existing.field.api.id.";
+    private static final String ATTACHMENT_DOCUMENT_API_ID = "attachment.document.api.id";
+    private static final String ATTACHMENT_FIELD_API_ID = "attachment.field.api.id";
 
     static {
         String dir = System.getProperty(USER_DIR);
@@ -63,5 +68,13 @@ public final class TestsConfigUtil {
 
     public static String getExistingField(int index) {
         return prop.getProperty(EXISTING_FIELD_API_ID + index);
+    }
+
+    public static String getAttachmentDocumentId() {
+        return prop.getProperty(ATTACHMENT_DOCUMENT_API_ID);
+    }
+
+    public static String getAttachmentFieldId() {
+        return prop.getProperty(ATTACHMENT_FIELD_API_ID);
     }
 }

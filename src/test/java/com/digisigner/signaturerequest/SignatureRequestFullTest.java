@@ -71,6 +71,59 @@ public class SignatureRequestFullTest extends SignatureRequestTest {
     }
 
     /**
+     * Tests send signature request.
+     * Curl example:
+     * {"send_documents_as_bundle": true,
+     * "bundle_title": "Bundle title",
+     * "bundle_subject": "My subject",
+     * "bundle_message": "My message",
+     * "documents" : [
+     * {"document_id": "06c4d320-d6c5-492b-b343-8482338ef9d0",
+     * "title": "Sample title",
+     * "subject": "Sample subject",
+     * "message": "Sample message",
+     * "signers": [*{"email": "signer_1@example.com"},{"email": "signer_2@example.com"}]}]}
+     */
+    @Test
+    public void testSendSignatureRequestAsBundle() {
+
+        // build signature request
+        SignatureRequest signatureRequest = new SignatureRequest();
+        signatureRequest.setSendEmails(SEND_EMAILS);
+        signatureRequest.setSendDocumentsAsBundle(true);
+        signatureRequest.setBundleTitle("Bundle title");
+        signatureRequest.setBundleSubject("My subject");
+        signatureRequest.setBundleMessage("My message");
+
+        // add document with possible attributes
+        URL url = getClass().getResource(TEST_DOCUMENT_LOCATION);
+        Document document = new Document(new File(url.getFile()), "TestSendSignatureRequest.pdf");
+
+        Signer signer1 = new Signer(SIGNER_EMAIL[0]);
+        signer1.setOrder(SIGNER_ORDER[0]);
+
+        Signer signer2 = new Signer(SIGNER_EMAIL[1]);
+        signer2.setOrder(SIGNER_ORDER[1]);
+
+        document.addSigner(signer1);
+        document.addSigner(signer2);
+        signatureRequest.addDocument(document);
+
+        // execute signature request
+        SignatureRequest signatureRequestResponse = client.sendSignatureRequest(signatureRequest);
+
+        // validate signature request response
+        validateResponse(signatureRequest, signatureRequestResponse, false);
+
+        // get and validate signature request from database
+        String signatureRequestId = signatureRequestResponse.getSignatureRequestId();
+        SignatureRequest createdSignatureRequest = client.getSignatureRequest(signatureRequestId);
+
+        assertTrue("Wrong number of signers", createdSignatureRequest.getDocuments().get(0).getSigners().size() == 2);
+        validateSignatureRequest(signatureRequest, createdSignatureRequest, false);
+    }
+
+    /**
      * Tests send signature request with fields.
      * Curl example:
      * {"documents" : [
