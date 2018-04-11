@@ -18,6 +18,9 @@ public class ExistingField {
     @XmlElement(name = "api_id")
     private String apiId;
 
+    @XmlElement(name = "group_id")
+    private String groupId;
+
     private String content;
 
     private String label;
@@ -38,6 +41,14 @@ public class ExistingField {
 
     public String getApiId() {
         return apiId;
+    }
+
+    public String getGroupId() {
+        return groupId;
+    }
+
+    public void setGroupId(String groupId) {
+        this.groupId = groupId;
     }
 
     public String getContent() {
