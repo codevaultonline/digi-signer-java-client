@@ -45,6 +45,6 @@ public final class Config {
     }
 
     public static String getDocumentAttachmentUrl(String server, String documentId, String fieldApiId) {
-        return getDocumentsUrl(server) + SLASH + documentId + FIELDS_URL + SLASH + fieldApiId + ATTACHMENT_URL ;
+        return getDocumentsUrl(server) + SLASH + documentId + FIELDS_URL + SLASH + fieldApiId + ATTACHMENT_URL;
     }
 }
