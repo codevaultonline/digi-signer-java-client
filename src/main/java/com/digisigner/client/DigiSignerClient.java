@@ -137,8 +137,8 @@ public class DigiSignerClient {
      * @param fieldApiId ID of field containing attachment.
      * @return retrieved document.
      */
-    public File getDocumentAttachment(String documentId, String fieldApiId) {
+    public File getDocumentAttachment(String documentId, String fieldApiId, String fileName) {
         String fileAttachmentUrl = Config.getDocumentAttachmentUrl(serverUrl, documentId, fieldApiId);
-        return new GetRequest(apiKey).getFileResponse(fileAttachmentUrl, null);
+        return new GetRequest(apiKey).getFileResponse(fileAttachmentUrl, fileName);
     }
 }

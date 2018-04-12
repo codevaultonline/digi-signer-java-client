@@ -1,7 +1,6 @@
 package com.digisigner.client;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 
 import org.junit.Test;
 
@@ -9,7 +8,9 @@ import org.junit.Test;
  * Test for the get document attachment request.
  */
 public class GetDocumentAttachmentsTest {
-    private String SERVER_URL = TestsConfigUtil.getServerUrl();
+    private static final String DESTINATION_FILE_NAME = "destinationFileName.pdf";
+
+    private static String SERVER_URL = TestsConfigUtil.getServerUrl();
 
     /**
      * The api key for test.
@@ -29,7 +30,7 @@ public class GetDocumentAttachmentsTest {
             String documentId = TestsConfigUtil.getAttachmentDocumentId();
             String fieldApiId = TestsConfigUtil.getAttachmentFieldId();
 
-            File file = client.getDocumentAttachment(documentId, fieldApiId);
+            File file = client.getDocumentAttachment(documentId, fieldApiId, DESTINATION_FILE_NAME);
             System.out.println("File attachments location: " + file.getAbsolutePath());
 
         } catch (DigiSignerException e) { // in case http code is wrong
