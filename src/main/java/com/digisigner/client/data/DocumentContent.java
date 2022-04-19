@@ -15,6 +15,7 @@ public class DocumentContent {
 
     private List<Signature> signatures;
 
+    @SuppressWarnings("unused")
     private DocumentContent() { /* JAXB requires it */ }
 
     public DocumentContent(List<Signature> signatures) {

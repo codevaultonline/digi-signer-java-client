@@ -12,8 +12,10 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import org.apache.log4j.Logger;
 
 /**
  * The document entity represents type of document in all document requests.
@@ -23,7 +25,7 @@ import org.apache.log4j.Logger;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Document {
 
-    private static final Logger log = Logger.getLogger(Document.class);
+    private static final Logger log = LogManager.getLogger(Document.class);
 
     private String fileName;
 

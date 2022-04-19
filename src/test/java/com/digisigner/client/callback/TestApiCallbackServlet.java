@@ -9,7 +9,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.json.JSONObject;
 
 import com.digisigner.client.data.Event;
@@ -22,7 +23,7 @@ import com.digisigner.client.data.Event;
 @SuppressWarnings("serial")
 public class TestApiCallbackServlet extends HttpServlet {
 
-    private static final Logger log = Logger.getLogger(TestApiCallbackServlet.class);
+    private static final Logger log = LogManager.getLogger(TestApiCallbackServlet.class);
 
     private static final String CONFIRMATION_TEXT = "DIGISIGNER_EVENT_ACCEPTED";
 
