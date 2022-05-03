@@ -19,6 +19,8 @@
         <jersey.version>2.6</jersey.version>
         <junit.version>4.13.1</junit.version>
         <jackson.annotations.version>2.6.4</jackson.annotations.version>
+        <jaxb-api.version>2.3.1</jaxb-api.version>
+        <jaxb.version>4.0.0-M4</jaxb.version>
         <servlet.version>3.0.1</servlet.version>
         <mail.version>1.4.3</mail.version>
     </properties>
@@ -58,6 +60,21 @@
             <groupId>com.fasterxml.jackson.core</groupId>
             <artifactId>jackson-annotations</artifactId>
             <version>${jackson.annotations.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>javax.xml.bind</groupId>
+            <artifactId>jaxb-api</artifactId>
+            <version>${jaxb-api.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.sun.xml.bind</groupId>
+            <artifactId>jaxb-core</artifactId>
+            <version>${jaxb.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.sun.xml.bind</groupId>
+            <artifactId>jaxb-impl</artifactId>
+            <version>${jaxb.version}</version>
         </dependency>
         <dependency>
             <groupId>javax.mail</groupId>
