@@ -18,42 +18,52 @@ import com.digisigner.client.data.Signer;
  */
 public class SignatureRequestTest {
 
-    // constants
-    String SERVER_URL = TestsConfigUtil.getServerUrl();
-    static final String API_KEY = TestsConfigUtil.getApiKey();
+    // server URL
+    protected static final String SERVER_URL = TestsConfigUtil.getServerUrl();
 
-    static final String TEST_DOCUMENT_LOCATION = "/document.pdf";
-    boolean SEND_EMAILS = false;  // by default we don't send emails
+    // test account API key
+    protected static final String API_KEY = TestsConfigUtil.getApiKey();
 
-    // document values
-    String TITLE = "Sample title";
-    String SUBJECT = "Sample subject";
-    String MESSAGE = "Sample message";
-    String TEMPLATE_ID = TestsConfigUtil.getTemplateId();
+    // should emails be sent during test?
+    protected static final boolean SEND_EMAILS = false;  // by default, we don't send emails
 
-    // signer values
-    String[] SIGNER_EMAIL = new String[]{"signer_1@example.com", "signer_2@example.com"};
-    String[] SIGNER_ROLE = new String[]{"Signer 1", "Signer 2"};
-    Integer[] SIGNER_ORDER = new Integer[]{1, 2};
+    // path to document that we upload to test account
+    protected static final String DOCUMENT = "/document.pdf";
 
-    // field values
-    int[][] FIELD_PAGE = new int[][]{{0, 0}, {0, 0}};
+    // template ID in test account
+    protected static final String TEMPLATE_ID = TestsConfigUtil.getTemplateId();
 
-    int[][][] FIELD_RECTANGLE = new int[][][]{
-            // fields for first signer
+    // title that document get when it gets uploaded to test account
+    protected static final String TITLE = "Sample title";
+
+    // email subject and message (only relevant if we send emails)
+    protected static final String SUBJECT = "Sample subject";
+    protected static final String MESSAGE = "Sample message";
+
+    // signers
+    protected static final String[] SIGNER_EMAIL = new String[]{"signer_1@example.com", "signer_2@example.com"};
+    protected static final String[] SIGNER_ROLE = new String[]{"Signer 1", "Signer 2"};
+    protected static final Integer[] SIGNER_ORDER = new Integer[]{1, 2};
+
+    // fields that are added to document
+    protected static final int[][] FIELD_PAGE = new int[][]{{0, 0}, {0, 0}};
+    protected static final int[][][] FIELD_RECTANGLE = new int[][][]{
             {{100, 100, 300, 200}, {400, 100, 450, 130}},
-            // fields for second signer
             {{100, 300, 300, 400}, {400, 300, 450, 330}}};
-
-    String[][] FIELD_CONTENT = new String[][]{{"Sample content 1", "Sample content 2"},
+    protected static final String[][] FIELD_CONTENT = new String[][]{
+            {"Sample content 1", "Sample content 2"},
             {"Sample content 3", "Sample content 4"}};
-    String[][] FIELD_LABEL = new String[][]{{"Sample label 1", "Sample label 2"},
+    protected static final String[][] FIELD_LABEL = new String[][]{
+            {"Sample label 1", "Sample label 2"},
+            {"Sample label 3", "Sample label 4"}};
+    protected static final String[][] FIELD_API_ID = new String[][]{
+            {"Sample API ID 1", "Sample API ID 2"},
             {"Sample API ID 3", "Sample API ID 4"}};
-    String[][] FIELD_API_ID = new String[][]{{"Sample API ID 1", "Sample API ID 2"},
-            {"Sample API ID 3", "Sample API ID 4"}};
-    boolean[][] FIELD_REQUIRED = new boolean[][]{{true, true}, {false, true}};
-    boolean[][] FIELD_READ_ONLY = new boolean[][]{{false, false}, {false, true}};
-    String[][] EXISTINGS_FIELD_API_ID = new String[][]{
+    protected static final boolean[][] FIELD_REQUIRED = new boolean[][]{{true, true}, {false, true}};
+    protected static final boolean[][] FIELD_READ_ONLY = new boolean[][]{{false, false}, {false, true}};
+
+    // fields that exist in test template
+    protected static final String[][] EXISTING_FIELD_API_ID = new String[][]{
             {TestsConfigUtil.getExistingField(0), TestsConfigUtil.getExistingField(1)},
             {TestsConfigUtil.getExistingField(2), TestsConfigUtil.getExistingField(3)}};
 
@@ -61,7 +71,7 @@ public class SignatureRequestTest {
 	/* =================  METHODS USED IN ALL SIGNATURE REQUEST TESTS ========================= */
 
     /**
-     * Validate response of Signature request.
+     * Validate response of signature request.
      *
      * @param expected   signature request.
      * @param actual     signature request.
@@ -72,7 +82,7 @@ public class SignatureRequestTest {
             Document document = actual.getDocuments().get(i);
             for (int s = 0; s < document.getSigners().size(); s++) {
                 String signDocumentUrl = document.getSigners().get(s).getSignDocumentUrl();
-                assertNotNull("The sign document URL cannot be null!", signDocumentUrl);
+                assertNotNull("The sign document URL cannot be null.", signDocumentUrl);
                 // validate signDocumentUrl
                 assertTrue("The sign document URL doesn't have required parameters.",
                         signDocumentUrl.matches("(?=.*documentId=)(?=.*invitationId=).*$"));
@@ -87,7 +97,7 @@ public class SignatureRequestTest {
     }
 
     /**
-     * Validate signature request..
+     * Validate signature request.
      *
      * @param expected   signature request.
      * @param actual     signature request.

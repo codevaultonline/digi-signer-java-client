@@ -18,25 +18,24 @@ import com.digisigner.client.data.Signature;
  */
 public class AddContentToDocumentTest {
 
-    private String SERVER_URL = TestsConfigUtil.getServerUrl();
-    
-    /**
-     * The api key for test.
-     * The value can be found in the DigiSigner account (Settings dialog).
-     */
+    // server URL
+    private static final String SERVER_URL = TestsConfigUtil.getServerUrl();
+
+    // test account API key
     private static final String API_KEY = TestsConfigUtil.getApiKey();
 
-    private static final String MESSAGE = "Message: ";
-
     // API client
-    private final DigiSignerClient client = new DigiSignerClient(SERVER_URL, API_KEY);
+    private static final DigiSignerClient client = new DigiSignerClient(SERVER_URL, API_KEY);
+
+    // path to document that we upload to test account
+    private static final String DOCUMENT = "/document.pdf";
 
     @Test
     public void testAddContentToDocument() throws FileNotFoundException {
 
         try {
             // upload document
-            URL url = getClass().getResource("/document.pdf");
+            URL url = getClass().getResource(DOCUMENT);
             Document document = new Document(new File(url.getFile()), "fromJUNIT.pdf");
             Document uploadedDocument = client.uploadDocument(document);
 
@@ -58,8 +57,9 @@ public class AddContentToDocumentTest {
 
             // add signatures to document
             client.addContentToDocument(uploadedDocument.getId(), signatures);
-        } catch (DigiSignerException e) { // in case http code is wrong
-            System.out.println(MESSAGE + e.getMessage());
+        }
+        catch (DigiSignerException e) { // in case http code is wrong
+            System.out.println(e.getMessage());
             for (String error : e.getErrors()) {
                 System.out.println(error);
             }

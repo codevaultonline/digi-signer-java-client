@@ -44,9 +44,11 @@ public class TestApiCallbackServlet extends HttpServlet {
 
             out = new PrintWriter(response.getOutputStream());
             out.write(CONFIRMATION_TEXT);
-        } catch (Exception e) {
+        }
+        catch (Exception e) {
             log.error("Failed to process callback", e);
-        } finally {
+        }
+        finally {
             if (out != null) out.close();
         }
     }
@@ -59,7 +61,8 @@ public class TestApiCallbackServlet extends HttpServlet {
             while ((line = reader.readLine()) != null) {
                 value.append(line);
             }
-        } catch (Exception e) {
+        }
+        catch (Exception e) {
             log.error("Error occurs during parse request.");
         }
 

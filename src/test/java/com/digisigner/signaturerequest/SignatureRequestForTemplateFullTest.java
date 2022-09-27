@@ -15,7 +15,7 @@ import com.digisigner.client.data.Signer;
 public class SignatureRequestForTemplateFullTest extends SignatureRequestTest {
 
     // API client
-    private DigiSignerClient client = new DigiSignerClient(SERVER_URL, API_KEY);
+    private static final DigiSignerClient client = new DigiSignerClient(SERVER_URL, API_KEY);
 
     /**
      * Test sending signature request for template.
@@ -27,23 +27,30 @@ public class SignatureRequestForTemplateFullTest extends SignatureRequestTest {
      */
     @Test
     public void testSendSignatureRequest() {
+
         // build signature request
         SignatureRequest signatureRequest = new SignatureRequest();
         signatureRequest.setSendEmails(SEND_EMAILS);
 
+        // build document
         Document document = new Document(TEMPLATE_ID);
         document.setTitle(TITLE);
         document.setSubject(SUBJECT);
         document.setMessage(MESSAGE);
-        
+
+        // build signer 1
         Signer signer1 = new Signer(SIGNER_EMAIL[0]);
         signer1.setOrder(SIGNER_ORDER[0]);
-        
+
+        // build signer 2
         Signer signer2 = new Signer(SIGNER_EMAIL[1]);
         signer2.setOrder(SIGNER_ORDER[1]);
-		
+
+        // add signers to document
         document.addSigner(signer1);
         document.addSigner(signer2);
+
+        // add document to signature request
         signatureRequest.addDocument(document);
 
         // execute signature request
@@ -55,9 +62,7 @@ public class SignatureRequestForTemplateFullTest extends SignatureRequestTest {
         // get and validate signature request from database
         String signatureRequestId = signatureRequestResponse.getSignatureRequestId();
         SignatureRequest createdSignatureRequest = client.getSignatureRequest(signatureRequestId);
-
         validateSignatureRequest(signatureRequest, createdSignatureRequest, false);
-
     }
 
     /**
@@ -82,59 +87,62 @@ public class SignatureRequestForTemplateFullTest extends SignatureRequestTest {
      */
     @Test
     public void testSendSignatureRequestWithExistingFields() {
+
         // build signature request
         SignatureRequest signatureRequest = new SignatureRequest();
         signatureRequest.setSendEmails(SEND_EMAILS);
 
+        // build document
         Document document = new Document(TEMPLATE_ID);
         document.setTitle(TITLE);
         document.setSubject(SUBJECT);
         document.setMessage(MESSAGE);
 
-        // add first signer
+        // build signer 1
         Signer signer1 = new Signer(SIGNER_EMAIL[0]);
         signer1.setRole(SIGNER_ROLE[0]);
         signer1.setOrder(SIGNER_ORDER[0]);
         
-        // add field for first signer
-        ExistingField field1 = new ExistingField(EXISTINGS_FIELD_API_ID[0][0]);
+        // add fields for signer 1
+        ExistingField field1 = new ExistingField(EXISTING_FIELD_API_ID[0][0]);
         field1.setContent(FIELD_CONTENT[0][0]);
         field1.setLabel(FIELD_LABEL[0][0]);
         field1.setRequired(FIELD_REQUIRED[0][0]);
         field1.setReadOnly(FIELD_READ_ONLY[0][0]);
         signer1.addExistingField(field1);
 
-        // add second field to first signer
-        ExistingField field2 = new ExistingField(EXISTINGS_FIELD_API_ID[0][1]);
+        ExistingField field2 = new ExistingField(EXISTING_FIELD_API_ID[0][1]);
         field2.setContent(FIELD_CONTENT[0][1]);
         field2.setLabel(FIELD_LABEL[0][1]);
         field2.setRequired(FIELD_REQUIRED[0][1]);
         field2.setReadOnly(FIELD_READ_ONLY[0][1]);
         signer1.addExistingField(field2);
 
-        // add second signer
+        // build signer 2
         Signer signer2 = new Signer(SIGNER_EMAIL[1]);
         signer2.setRole(SIGNER_ROLE[1]);
         signer2.setOrder(SIGNER_ORDER[1]);
 
-        // add field for second signer
-        ExistingField field3 = new ExistingField(EXISTINGS_FIELD_API_ID[1][0]);
+        // add field for signer 2
+        ExistingField field3 = new ExistingField(EXISTING_FIELD_API_ID[1][0]);
         field3.setContent(FIELD_CONTENT[1][0]);
         field3.setLabel(FIELD_LABEL[1][0]);
         field3.setRequired(FIELD_REQUIRED[1][0]);
         field3.setReadOnly(FIELD_READ_ONLY[1][0]);
         signer2.addExistingField(field3);
 
-        // add second field to second signer
-        ExistingField field4 = new ExistingField(EXISTINGS_FIELD_API_ID[1][1]);
+        ExistingField field4 = new ExistingField(EXISTING_FIELD_API_ID[1][1]);
         field4.setContent(FIELD_CONTENT[1][1]);
         field4.setLabel(FIELD_LABEL[1][1]);
         field4.setRequired(FIELD_REQUIRED[1][1]);
         field4.setReadOnly(FIELD_READ_ONLY[1][1]);
         signer2.addExistingField(field4);
 
+        // add signers to document
         document.addSigner(signer1);
         document.addSigner(signer2);
+
+        // add document to signature request
         signatureRequest.addDocument(document);
 
         // execute signature request

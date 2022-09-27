@@ -20,7 +20,7 @@ import com.digisigner.client.data.Signer;
 public class SignatureRequestFullTest extends SignatureRequestTest {
 
     // API client
-    private DigiSignerClient client = new DigiSignerClient(SERVER_URL, API_KEY);
+    private static final DigiSignerClient client = new DigiSignerClient(SERVER_URL, API_KEY);
 
     /**
      * Tests send signature request.
@@ -39,21 +39,26 @@ public class SignatureRequestFullTest extends SignatureRequestTest {
         SignatureRequest signatureRequest = new SignatureRequest();
         signatureRequest.setSendEmails(SEND_EMAILS);
 
-        // add document with possible attributes
-        URL url = getClass().getResource(TEST_DOCUMENT_LOCATION);
+        // build document
+        URL url = getClass().getResource(DOCUMENT);
         Document document = new Document(new File(url.getFile()), "TestSendSignatureRequest.pdf");
         document.setTitle(TITLE);
         document.setSubject(SUBJECT);
         document.setMessage(MESSAGE);
-        
+
+        // build signer 1
         Signer signer1 = new Signer(SIGNER_EMAIL[0]);
         signer1.setOrder(SIGNER_ORDER[0]);
-        
+
+        // build signer 2
         Signer signer2 = new Signer(SIGNER_EMAIL[1]);
         signer2.setOrder(SIGNER_ORDER[1]);
-		
+
+        // add signers to document
         document.addSigner(signer1);
         document.addSigner(signer2);
+
+        // add document to signature request
         signatureRequest.addDocument(document);
 
         // execute signature request
@@ -66,7 +71,7 @@ public class SignatureRequestFullTest extends SignatureRequestTest {
         String signatureRequestId = signatureRequestResponse.getSignatureRequestId();
         SignatureRequest createdSignatureRequest = client.getSignatureRequest(signatureRequestId);
 
-        assertTrue("Wrong number of signers", createdSignatureRequest.getDocuments().get(0).getSigners().size() == 2);
+        assertTrue("Wrong number of signers.", createdSignatureRequest.getDocuments().get(0).getSigners().size() == 2);
         validateSignatureRequest(signatureRequest, createdSignatureRequest, true);
     }
 
@@ -92,18 +97,23 @@ public class SignatureRequestFullTest extends SignatureRequestTest {
         signatureRequest.setBundleSubject("My subject");
         signatureRequest.setBundleMessage("My message");
 
-        // add document with possible attributes
-        URL url = getClass().getResource(TEST_DOCUMENT_LOCATION);
+        // build document
+        URL url = getClass().getResource(DOCUMENT);
         Document document = new Document(new File(url.getFile()), "TestSendSignatureRequest.pdf");
 
+        // build signer 1
         Signer signer1 = new Signer(SIGNER_EMAIL[0]);
         signer1.setOrder(SIGNER_ORDER[0]);
 
+        // build signer 2
         Signer signer2 = new Signer(SIGNER_EMAIL[1]);
         signer2.setOrder(SIGNER_ORDER[1]);
 
+        // add signers to document
         document.addSigner(signer1);
         document.addSigner(signer2);
+
+        // add document to signature request
         signatureRequest.addDocument(document);
 
         // execute signature request
@@ -116,7 +126,7 @@ public class SignatureRequestFullTest extends SignatureRequestTest {
         String signatureRequestId = signatureRequestResponse.getSignatureRequestId();
         SignatureRequest createdSignatureRequest = client.getSignatureRequest(signatureRequestId);
 
-        assertTrue("Wrong number of signers", createdSignatureRequest.getDocuments().get(0).getSigners().size() == 2);
+        assertTrue("Wrong number of signers.", createdSignatureRequest.getDocuments().get(0).getSigners().size() == 2);
         validateSignatureRequest(signatureRequest, createdSignatureRequest, false);
     }
 
@@ -147,22 +157,24 @@ public class SignatureRequestFullTest extends SignatureRequestTest {
      */
     @Test
     public void testSendSignatureRequestWithFields() {
+
         // build signature request
         SignatureRequest signatureRequest = new SignatureRequest();
         signatureRequest.setSendEmails(SEND_EMAILS);
 
-        // add document with possible attributes
-        URL url = getClass().getResource(TEST_DOCUMENT_LOCATION);
+        // build document
+        URL url = getClass().getResource(DOCUMENT);
         Document document = new Document(new File(url.getFile()), "TestSendSignatureRequestWithFields.pdf");
         document.setTitle(TITLE);
         document.setSubject(SUBJECT);
         document.setMessage(MESSAGE);
 
-        // add first signer
+        // build signer 1
         Signer signer1 = new Signer(SIGNER_EMAIL[0]);
         signer1.setRole(SIGNER_ROLE[0]);
         signer1.setOrder(SIGNER_ORDER[0]);
-        // add fields for first signer
+
+        // add fields for signer 1
         Field field1 = new Field(FIELD_PAGE[0][0], FIELD_RECTANGLE[0][0], FieldType.SIGNATURE);
         field1.setApiId(FIELD_API_ID[0][0]);
         field1.setLabel(FIELD_LABEL[0][0]);
@@ -179,11 +191,12 @@ public class SignatureRequestFullTest extends SignatureRequestTest {
         field2.setReadOnly(FIELD_READ_ONLY[0][1]);
         signer1.addField(field2);
 
-        // add second signer
+        // build signer 2
         Signer signer2 = new Signer(SIGNER_EMAIL[1]);
         signer2.setRole(SIGNER_ROLE[1]);
         signer2.setOrder(SIGNER_ORDER[1]);
-        // add fields for second signer
+
+        // add fields for signer 2
         Field field3 = new Field(FIELD_PAGE[1][0], FIELD_RECTANGLE[1][0], FieldType.SIGNATURE);
         field3.setApiId(FIELD_API_ID[1][0]);
         field3.setLabel(FIELD_LABEL[1][0]);
@@ -200,8 +213,11 @@ public class SignatureRequestFullTest extends SignatureRequestTest {
         field4.setReadOnly(FIELD_READ_ONLY[1][1]);
         signer2.addField(field4);
 
+        // add signers to document
         document.addSigner(signer1);
         document.addSigner(signer2);
+
+        // add document to signature request
         signatureRequest.addDocument(document);
 
         // execute signature request
@@ -214,7 +230,7 @@ public class SignatureRequestFullTest extends SignatureRequestTest {
         String signatureRequestId = signatureRequestResponse.getSignatureRequestId();
         SignatureRequest createdSignatureRequest = client.getSignatureRequest(signatureRequestId);
 
-        assertTrue("Wrong number of signers", createdSignatureRequest.getDocuments().get(0).getSigners().size() == 2);
+        assertTrue("Wrong number of signers.", createdSignatureRequest.getDocuments().get(0).getSigners().size() == 2);
         validateSignatureRequest(signatureRequest, createdSignatureRequest, true);
 
         // get and validate fields from database
