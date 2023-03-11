@@ -1,19 +1,17 @@
 package com.digisigner.client.data;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
-
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlRootElement;
-
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import org.apache.log4j.Logger;
 
 /**
  * The document entity represents type of document in all document requests.
@@ -22,8 +20,6 @@ import org.apache.log4j.Logger;
 @XmlAccessorType(XmlAccessType.NONE)
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Document {
-
-    private static final Logger log = Logger.getLogger(Document.class);
 
     private String fileName;
 
@@ -110,7 +106,7 @@ public class Document {
         return null;
     }
 
-    public InputStream getInputStream() {
+    public InputStream getInputStream() throws FileNotFoundException {
         if (inputStream != null) {
             return inputStream;
         }
@@ -120,13 +116,8 @@ public class Document {
         return null;
     }
 
-    private InputStream getInputStreamFromFile() {
-        try {
-            return new FileInputStream(file);
-        } catch (FileNotFoundException e) {
-            log.error("File was not found!", e);
-        }
-        return null;
+    private InputStream getInputStreamFromFile() throws FileNotFoundException {
+        return new FileInputStream(file);
     }
 
     public File getFile() {
