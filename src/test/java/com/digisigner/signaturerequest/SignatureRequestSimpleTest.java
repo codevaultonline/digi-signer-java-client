@@ -23,11 +23,10 @@ import com.digisigner.client.data.Signer;
 public class SignatureRequestSimpleTest extends SignatureRequestTest {
 
     // API client
-    private static final DigiSignerClient client = new DigiSignerClient(SERVER_URL, API_KEY);
+    private DigiSignerClient client = new DigiSignerClient(SERVER_URL, API_KEY);
 
     /**
      * Tests send signature request for file.
-     *
      * Example string for curl:
      * {"send_emails": false,
      *   "documents" : [
@@ -41,7 +40,7 @@ public class SignatureRequestSimpleTest extends SignatureRequestTest {
         signatureRequest.setSendEmails(SEND_EMAILS);
 
         // add document from file and one signer
-        URL url = getClass().getResource(DOCUMENT);
+        URL url = getClass().getResource(TEST_DOCUMENT_LOCATION);
         Document document = new Document(new File(url.getFile()), "TestSendSignatureRequestForFile.pdf");
         document.addSigner(new Signer(SIGNER_EMAIL[0]));
         signatureRequest.addDocument(document);
@@ -69,7 +68,7 @@ public class SignatureRequestSimpleTest extends SignatureRequestTest {
         signatureRequest.setSendEmails(SEND_EMAILS);
 
         // add document from input stream and one signer
-        URL url = getClass().getResource(DOCUMENT);
+        URL url = getClass().getResource(TEST_DOCUMENT_LOCATION);
         InputStream inputStream = new FileInputStream(new File(url.getFile()));
         Document document = new Document(inputStream, "TestSendSignatureRequestForInputStream.pdf");
         document.addSigner(new Signer(SIGNER_EMAIL[0]));
@@ -106,25 +105,21 @@ public class SignatureRequestSimpleTest extends SignatureRequestTest {
         SignatureRequest signatureRequest = new SignatureRequest();
         signatureRequest.setSendEmails(SEND_EMAILS);
 
-        // create document from file and one signer
-        URL url = getClass().getResource(DOCUMENT);
+        // add document from file and one signer
+        URL url = getClass().getResource(TEST_DOCUMENT_LOCATION);
         Document document = new Document(new File(url.getFile()), "TestSendSignatureRequestWithFields.pdf");
         Signer signer = new Signer(SIGNER_EMAIL[0]);
-
-        // add field with API ID to be able to find it latter
+        // add field with API ID to be able find it latter
         Field field1 = new Field(FIELD_PAGE[0][0], FIELD_RECTANGLE[0][0], FieldType.SIGNATURE);
         field1.setApiId(FIELD_API_ID[0][0]);
         signer.addField(field1);
-
         // add second field to signer
         Field field2 = new Field(FIELD_PAGE[0][1], FIELD_RECTANGLE[0][1], FieldType.TEXT);
         field2.setApiId(FIELD_API_ID[0][1]);
         signer.addField(field2);
 
-        // add signer to document
         document.addSigner(signer);
 
-        // add document to signature request
         signatureRequest.addDocument(document);
 
         // execute signature request

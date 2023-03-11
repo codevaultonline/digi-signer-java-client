@@ -5,7 +5,7 @@ package com.digisigner.client.http;
  */
 public final class Config {
 
-    public static final String DEFAULT_SERVER_URL = "https://api.digisigner.com";
+    public static final String DEFAULT_SERVER_URL = "https://digisigner.com/online/api";
 
     private static final String VERSION = "/v1";
     private static final String DOCUMENTS_URL = "/documents";

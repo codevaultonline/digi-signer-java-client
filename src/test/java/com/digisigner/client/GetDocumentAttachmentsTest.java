@@ -8,18 +8,20 @@ import org.junit.Test;
  * Test for the get document attachment request.
  */
 public class GetDocumentAttachmentsTest {
+    private static final String DESTINATION_FILE_NAME = "destinationFileName.pdf";
 
-    // server URL
-    private static final String SERVER_URL = TestsConfigUtil.getServerUrl();
+    private static String SERVER_URL = TestsConfigUtil.getServerUrl();
 
-    // test account API key
+    /**
+     * The api key for test.
+     * The value can be found in the DigiSigner account (Settings dialog).
+     */
     private static final String API_KEY = TestsConfigUtil.getApiKey();
 
-    // API client
-    private static final DigiSignerClient client = new DigiSignerClient(SERVER_URL, API_KEY);
+    private static final String MESSAGE = "Message: ";
 
-    // file name for downloaded attachment
-    private static final String ATTACHMENT_FILE_NAME = "attachment.txt";
+    // API client
+    private final DigiSignerClient client = new DigiSignerClient(SERVER_URL, API_KEY);
 
     @Test
     public void testAddContentToDocument() {
@@ -28,11 +30,11 @@ public class GetDocumentAttachmentsTest {
             String documentId = TestsConfigUtil.getAttachmentDocumentId();
             String fieldApiId = TestsConfigUtil.getAttachmentFieldId();
 
-            File file = client.getDocumentAttachment(documentId, fieldApiId, ATTACHMENT_FILE_NAME);
+            File file = client.getDocumentAttachment(documentId, fieldApiId, DESTINATION_FILE_NAME);
             System.out.println("File attachments location: " + file.getAbsolutePath());
-        }
-        catch (DigiSignerException e) { // in case http code is wrong
-            System.err.println(e.getMessage());
+
+        } catch (DigiSignerException e) { // in case http code is wrong
+            System.err.println(MESSAGE + e.getMessage());
             if (e.getErrors() != null) {
                 for (String error : e.getErrors()) {
                     System.err.println(error);

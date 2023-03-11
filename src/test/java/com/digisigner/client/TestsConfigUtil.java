@@ -44,11 +44,9 @@ public final class TestsConfigUtil {
             in = new FileInputStream(dir + DIGISIGNER_TEST_PROPERTIES);
             prop.load(in);
             in.close();
-        }
-        catch (FileNotFoundException e) {
+        } catch (FileNotFoundException e) {
             System.out.println(e.getMessage());
-        }
-        catch (IOException e) {
+        } catch (IOException e) {
             System.out.println(e.getMessage());
         }
     }

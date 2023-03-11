@@ -9,8 +9,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.apache.log4j.Logger;
 import org.json.JSONObject;
 
 import com.digisigner.client.data.Event;
@@ -23,7 +22,7 @@ import com.digisigner.client.data.Event;
 @SuppressWarnings("serial")
 public class TestApiCallbackServlet extends HttpServlet {
 
-    private static final Logger log = LogManager.getLogger(TestApiCallbackServlet.class);
+    private static final Logger log = Logger.getLogger(TestApiCallbackServlet.class);
 
     private static final String CONFIRMATION_TEXT = "DIGISIGNER_EVENT_ACCEPTED";
 
@@ -44,11 +43,9 @@ public class TestApiCallbackServlet extends HttpServlet {
 
             out = new PrintWriter(response.getOutputStream());
             out.write(CONFIRMATION_TEXT);
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             log.error("Failed to process callback", e);
-        }
-        finally {
+        } finally {
             if (out != null) out.close();
         }
     }
@@ -61,8 +58,7 @@ public class TestApiCallbackServlet extends HttpServlet {
             while ((line = reader.readLine()) != null) {
                 value.append(line);
             }
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             log.error("Error occurs during parse request.");
         }
 

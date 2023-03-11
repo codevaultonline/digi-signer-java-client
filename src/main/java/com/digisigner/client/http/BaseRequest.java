@@ -49,7 +49,6 @@ public class BaseRequest {
     }
 
     protected static String convertStreamToString(InputStream is) {
-        @SuppressWarnings("resource")
         Scanner s = new Scanner(is).useDelimiter("\\A");
         return s.hasNext() ? s.next() : "";
     }

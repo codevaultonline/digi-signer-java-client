@@ -13,8 +13,7 @@ import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.apache.log4j.Logger;
 
 import com.digisigner.client.DigiSignerException;
 import com.digisigner.client.data.Document;
@@ -24,7 +23,7 @@ import com.digisigner.client.data.Document;
  */
 public class PostRequest extends BaseRequest {
 
-    private static final Logger log = LogManager.getLogger(PostRequest.class);
+    private static final Logger log = Logger.getLogger(PostRequest.class);
 
     private static final String FILE_PART_NAME = "file";
     private static final String CRLF = "\r\n";
